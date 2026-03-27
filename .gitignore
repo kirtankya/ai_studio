@@ -1,0 +1,4 @@
+node_modules/
+news.db
+__pycache__/
+*.pyc
