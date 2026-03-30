@@ -4,7 +4,7 @@ export const revalidate = 60;
 
 async function getArticle(id) {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const res = await fetch(`${apiUrl}/api/news/${id}`, { next: { revalidate: 60 } });
     if (!res.ok) {
       if (res.status === 404) return null;

@@ -22,7 +22,7 @@ export default function AdminPage() {
 
   const fetchNews = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       const res = await fetch(`${apiUrl}/api/news`, { cache: "no-store" });
       if (res.ok) {
         const data = await res.json();
@@ -38,7 +38,7 @@ export default function AdminPage() {
     setLoading(true);
     setMessage("");
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       const res = await fetch(`${apiUrl}/api/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -68,7 +68,7 @@ export default function AdminPage() {
     setLoading(true);
     setMessage("Scraping started... please wait.");
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       const res = await fetch(`${apiUrl}/api/admin/scrape`, {
         method: "POST",
         headers: {
@@ -89,7 +89,7 @@ export default function AdminPage() {
     if (!confirm("Are you sure you want to delete this article?")) return;
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       const res = await fetch(`${apiUrl}/api/admin/news/${id}`, {
         method: "DELETE",
         headers: {
