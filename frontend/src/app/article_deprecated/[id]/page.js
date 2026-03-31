@@ -1,16 +1,21 @@
+import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 
 export const revalidate = 60;
 
 async function getArticle(id) {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const res = await fetch(`${apiUrl}/api/news/${id}`, { next: { revalidate: 60 } });
-    if (!res.ok) {
-      if (res.status === 404) return null;
-      throw new Error(`Failed to fetch article ${id}`);
+    const { data, error } = await supabase
+      .from('news')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      console.error(`Error fetching article ${id}:`, error);
+      return null;
     }
-    return await res.json();
+    return data;
   } catch (error) {
     console.error(error);
     return null;
@@ -36,15 +41,11 @@ export default async function ArticlePage({ params }) {
         <img src={article.image} alt={article.title} className="image" />
       )}
 
-      {article.description && (
-        <p className="desc">{article.description}</p>
-      )}
+      <div className="desc" style={{ whiteSpace: "pre-wrap", fontSize: "1.15rem", lineHeight: "1.8", color: "#333" }}>
+        {article.content || article.description || "No content found for this article."}
+      </div>
 
-      {!article.description && (
-        <p className="desc">No full description was scraped for this article. Please read the full article on the original site.</p>
-      )}
-
-      <a href={article.url} target="_blank" rel="noopener noreferrer" className="original-link">
+      <a href={article.url} target="_blank" rel="noopener noreferrer" className="original-link" style={{ marginTop: "3rem" }}>
         Read Original Article on Indian Express
       </a>
     </div>

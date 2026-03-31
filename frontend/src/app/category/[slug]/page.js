@@ -29,29 +29,33 @@ export default async function CategoryPage({ params }) {
         <p>No news found in this category.</p>
       ) : (
         <div className="grid">
-          {news.map((item) => (
-            <div key={item.id} className="news-card">
-              {item.image ? (
-                <img src={item.image} alt={item.title} className="image" />
-              ) : (
-                <div className="image" style={{ display: "flex", alignItems: "center", justifyContent: "center", color: "#999" }}>
-                  No Image Available
-                </div>
-              )}
-              <div className="content">
-                <h3>{item.title}</h3>
-                <div className="meta">
-                  <span>{new Date(item.published_date).toLocaleDateString()}</span>
-                </div>
-                {item.description && (
-                  <p className="desc">{item.description}</p>
+          {news.map((item) => {
+            const slug = item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/\/$/, '');
+            
+            return (
+              <div key={item.id} className="news-card">
+                {item.image ? (
+                  <img src={item.image} alt={item.title} className="image" />
+                ) : (
+                  <div className="image" style={{ display: "flex", alignItems: "center", justifyContent: "center", color: "#999" }}>
+                    No Image Available
+                  </div>
                 )}
-                <Link href={`/article/${item.id}`} className="read-more">
-                  Read More &rarr;
-                </Link>
+                <div className="content">
+                  <h3>{item.title}</h3>
+                  <div className="meta">
+                    <span>{new Date(item.published_date).toLocaleDateString()}</span>
+                  </div>
+                  {item.description && (
+                    <p className="desc">{item.description}</p>
+                  )}
+                  <Link href={`/${slug}`} className="read-more">
+                    Read More &rarr;
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

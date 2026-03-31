@@ -16,9 +16,10 @@ export default function RootLayout({ children }) {
           </Link>
           <div className="nav-links">
             <Link href="/">Home</Link>
+            <Link href="/category/india">India</Link>
+            <Link href="/category/world">World</Link>
             <Link href="/category/cities">Cities</Link>
-            <Link href="/category/business">Business</Link>
-            <Link href="/category/sports">Sports</Link>
+            <Link href="/category/technology">Tech</Link>
             <Link href="/admin">Admin</Link>
           </div>
         </nav>
