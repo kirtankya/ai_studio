@@ -25,10 +25,12 @@ def scheduled_scrape():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     scheduler = BackgroundScheduler()
-    scheduler.add_job(scheduled_scrape, 'interval', minutes=30)
+    scheduler.add_job(scheduled_scrape, 'interval', minutes=15)
     scheduler.start()
+    print("Scheduler started (runs every 15 minutes)")
     yield
     scheduler.shutdown()
+    print("Scheduler shut down")
 
 app = FastAPI(title="News Scraper API", lifespan=lifespan)
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 export default function AdminPage() {
   const [token, setToken] = useState(null);
@@ -22,10 +23,11 @@ export default function AdminPage() {
 
   const fetchNews = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const res = await fetch(`${apiUrl}/api/news`, { cache: "no-store" });
-      if (res.ok) {
-        const data = await res.json();
+      const { data, error } = await supabase
+        .from('news')
+        .select('*')
+        .order('id', { ascending: false });
+      if (data) {
         setNews(data);
       }
     } catch (err) {
@@ -37,26 +39,20 @@ export default function AdminPage() {
     e.preventDefault();
     setLoading(true);
     setMessage("");
-    try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const res = await fetch(`${apiUrl}/api/admin/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setToken(data.token);
-        localStorage.setItem("adminToken", data.token);
-        fetchNews();
-      } else {
-        setMessage("Invalid credentials");
-      }
-    } catch (err) {
-      setMessage("Error connecting to server");
-    } finally {
-      setLoading(false);
+
+    // Static client-side check
+    const STATIC_ADMIN = "admin";
+    const STATIC_PASS = "admin123";
+    const STATIC_TOKEN = "u1aiiYOCiE2cIqyAyy1PJekbq3Egvtie4S0AddlwB80bPjWRLD2Go9j1miWUVi5GOMjdVwMakj1GAPreSYFfFms8qgzJXgZc2EV6cRv3Q5VKSRzQLIL2wwvtJazcTHeECWGgteuBld6Fs0V8WcBqOIiHWQIoyHPiYzDhihy7ODCeyJfjAcBb3MOlLacvS4AfvwLiQZLdFReioj3C2KRIOPTRFmV0AxDWe2oq6YLx0s5kBgR";
+
+    if (username === STATIC_ADMIN && password === STATIC_PASS) {
+      setToken(STATIC_TOKEN);
+      localStorage.setItem("adminToken", STATIC_TOKEN);
+      fetchNews();
+    } else {
+      setMessage("Invalid credentials (static check)");
     }
+    setLoading(false);
   };
 
   const handleLogout = () => {
@@ -68,8 +64,8 @@ export default function AdminPage() {
     setLoading(true);
     setMessage("Scraping started... please wait.");
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const res = await fetch(`${apiUrl}/api/admin/scrape`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      const res = await fetch(`${apiUrl.replace(/\/$/, '')}/api/admin/scrape`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -89,8 +85,8 @@ export default function AdminPage() {
     if (!confirm("Are you sure you want to delete this article?")) return;
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const res = await fetch(`${apiUrl}/api/admin/news/${id}`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      const res = await fetch(`${apiUrl.replace(/\/$/, '')}/api/admin/news/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`
