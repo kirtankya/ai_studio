@@ -58,8 +58,10 @@ def normalize_url(url):
     return url
 
 
-def extract_category_from_url(url):
+def extract_category_from_url(url, title=""):
     """Extract category from URL pattern /article/{category}/{slug}"""
+    if "-live-updates" in url.lower() or "Live:" in title:
+        return "Live News"
     try:
         parts = url.rstrip('/').split('/')
         if 'article' in parts:
@@ -143,7 +145,8 @@ def get_article_details(url):
         if not content:
             content = description
 
-        category = extract_category_from_url(url)
+        is_live = "live-updates" in url.lower() or (title and title.startswith("Live:"))
+        category = extract_category_from_url(url, title)
 
         return {
             "title": title,
@@ -153,6 +156,7 @@ def get_article_details(url):
             "description": description,
             "content": content,
             "category": category,
+            "is_live": is_live,
             "published_date": published_date
         }
 
@@ -174,6 +178,26 @@ def extract_content(soup):
         'div.articles',
         'article',
     ]
+
+    # Check for live blog entries first
+    live_entries = soup.select('div.liveblog-entry, div.live-blog-entry')
+    if live_entries:
+        entry_texts = []
+        for entry in live_entries[:15]: # Get last 15 updates
+            time_tag = entry.select_one('span.liveblog-entry-time, time')
+            title_tag = entry.select_one('h2.liveblog-entry-title, h3')
+            body_tag = entry.select_one('div.liveblog-entry-text, div.entry-content')
+            
+            entry_str = ""
+            if time_tag: entry_str += f"[{time_tag.get_text().strip()}] "
+            if title_tag: entry_str += f"**{title_tag.get_text().strip()}**\n"
+            if body_tag: entry_str += body_tag.get_text().strip()
+            
+            if entry_str:
+                entry_texts.append(entry_str)
+        
+        if entry_texts:
+            return "\n\n---\n\n".join(entry_texts)
 
     article_body = None
     for selector in selectors:

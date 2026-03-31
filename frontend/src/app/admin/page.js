@@ -160,6 +160,7 @@ export default function AdminPage() {
           <thead>
             <tr>
               <th>ID</th>
+              <th>Status</th>
               <th>Title</th>
               <th>Category</th>
               <th>Date</th>
@@ -167,26 +168,37 @@ export default function AdminPage() {
             </tr>
           </thead>
           <tbody>
-            {news.map(item => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td style={{ maxWidth: 300, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                  <Link href={`/article/${item.id}`} target="_blank" style={{ color: "var(--primary-color)" }}>
-                    {item.title}
-                  </Link>
-                </td>
-                <td style={{ textTransform: "capitalize" }}>{item.category}</td>
-                <td>{new Date(item.published_date).toLocaleDateString()}</td>
-                <td>
-                  <button onClick={() => handleDelete(item.id)} style={{ background: "#d32f2f", padding: "0.25rem 0.5rem", fontSize: "0.85rem" }}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {news.map(item => {
+              const slug = item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/\/$/, '');
+              return (
+                <tr key={item.id}>
+                  <td>{item.id}</td>
+                  <td>
+                    {item.is_live ? (
+                      <span style={{ color: "#d32f2f", fontWeight: "bold", fontSize: "0.8rem", border: "1px solid #d32f2f", padding: "2px 4px", borderRadius: 4 }}>LIVE</span>
+                    ) : (
+                      <span style={{ color: "#777", fontSize: "0.8rem" }}>Static</span>
+                    )}
+                  </td>
+                  <td style={{ maxWidth: 300, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {/* Consistent slug-based link */}
+                    <Link href={`/${slug}`} target="_blank" style={{ color: "var(--primary-color)" }}>
+                      {item.title}
+                    </Link>
+                  </td>
+                  <td style={{ textTransform: "capitalize" }}>{item.category}</td>
+                  <td>{new Date(item.published_date).toLocaleDateString()}</td>
+                  <td>
+                    <button onClick={() => handleDelete(item.id)} style={{ background: "#d32f2f", padding: "0.25rem 0.5rem", fontSize: "0.85rem" }}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
             {news.length === 0 && (
               <tr>
-                <td colSpan="5" style={{ textAlign: "center", padding: "2rem" }}>No articles found</td>
+                <td colSpan="6" style={{ textAlign: "center", padding: "2rem" }}>No articles found</td>
               </tr>
             )}
           </tbody>

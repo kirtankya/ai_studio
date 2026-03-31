@@ -31,12 +31,17 @@ def init_db():
                 description TEXT,
                 content TEXT,
                 category TEXT,
+                is_live INTEGER DEFAULT 0,
                 published_date TEXT
             )
         ''')
         # Try to add slug column if it doesn't exist (primitive migration)
         try:
             cursor.execute('ALTER TABLE news ADD COLUMN slug TEXT UNIQUE')
+        except:
+            pass
+        try:
+            cursor.execute('ALTER TABLE news ADD COLUMN is_live INTEGER DEFAULT 0')
         except:
             pass
         conn.commit()
@@ -62,14 +67,15 @@ def insert_news(news_list: List[Dict[str, Any]]):
         for news in news_list:
             try:
                 cursor.execute('''
-                    INSERT INTO news (title, slug, url, image, description, category, published_date, content)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO news (title, slug, url, image, description, category, is_live, published_date, content)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ON CONFLICT(url) DO UPDATE SET
                     slug=excluded.slug,
                     description=excluded.description,
                     content=excluded.content,
-                    image=excluded.image
-                ''', (news.get("title"), news.get("slug"), news.get("url"), news.get("image"), news.get("description"), news.get("category"), news.get("published_date"), news.get("content")))
+                    image=excluded.image,
+                    is_live=excluded.is_live
+                ''', (news.get("title"), news.get("slug"), news.get("url"), news.get("image"), news.get("description"), news.get("category"), 1 if news.get("is_live") else 0, news.get("published_date"), news.get("content")))
                 inserted += 1
             except Exception as e:
                 print("SQLite upsert error:", e)

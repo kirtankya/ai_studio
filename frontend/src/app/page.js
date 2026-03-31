@@ -1,84 +1,129 @@
+import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 
-export const revalidate = 60; // SSR with ISR every 60 seconds
+export const revalidate = 60;
 
-async function getNews(page = 1) {
+async function getNews(page = 1, pageSize = 12) {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
-    // We use our backend API to handle pagination and sorting correctly
-    const res = await fetch(`${apiUrl}/api/news?page=${page}&size=12`, { cache: 'no-store' });
-    if (!res.ok) return [];
-    return await res.json();
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+
+    const { data, error } = await supabase
+      .from('news')
+      .select('*')
+      .order('published_date', { ascending: false })
+      .range(from, to);
+
+    if (error) return [];
+    return data;
   } catch (error) {
-    console.error("Failed to fetch news:", error);
+    return [];
+  }
+}
+
+async function getLiveNews() {
+  try {
+    const { data, error } = await supabase
+      .from('news')
+      .select('*')
+      .eq('is_live', true)
+      .order('published_date', { ascending: false })
+      .limit(5);
+    if (error) return [];
+    return data;
+  } catch (error) {
     return [];
   }
 }
 
 export default async function Home({ searchParams }) {
   const page = parseInt(searchParams?.page || "1");
-  const news = await getNews(page);
+  const allNews = await getNews(page);
+  const liveNews = page === 1 ? await getLiveNews() : [];
 
   return (
-    <div>
-      <h1 style={{ marginBottom: "2rem", fontSize: "2rem", borderBottom: "2px solid #eee", paddingBottom: "1rem" }}>
-        Latest News
-      </h1>
-
-      {news.length === 0 ? (
-        <p>No news found. Maybe the scraper hasn&apos;t run yet?</p>
-      ) : (
-        <>
-          <div className="grid">
-            {news.map((item) => {
-              // Extract the path from the full URL (domain replacement)
-              const slug = item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/\/$/, '');
-              
-              return (
-                <div key={item.id} className="news-card">
-                  {item.image ? (
-                    <img src={item.image} alt={item.title} className="image" />
-                  ) : (
-                    <div className="image" style={{ display: "flex", alignItems: "center", justifyContent: "center", color: "#999" }}>
-                      No Image Available
-                    </div>
-                  )}
-                  <div className="content">
-                    <h3>{item.title}</h3>
-                    <div className="meta">
-                      <span>{item.category}</span> &bull; <span>{new Date(item.published_date).toLocaleDateString()}</span>
-                    </div>
-                    {item.description && (
-                      <p className="desc">{item.description}</p>
-                    )}
-                    {/* Proper internal link using domain replacement path */}
-                    <Link href={`/${slug}`} className="read-more">
-                      Read More &rarr;
-                    </Link>
-                  </div>
-                </div>
-              );
+    <div className="home-container">
+      {/* Live News Section (Horizontal) */}
+      {page === 1 && liveNews.length > 0 && (
+        <section className="live-section">
+          <div className="section-header">
+            <div className="live-indicator">
+              <span className="dot"></span>
+              LIVE UPDATES
+            </div>
+          </div>
+          <div className="live-ticker-container">
+            {liveNews.map(item => {
+               const slug = item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/\/$/, '');
+               return (
+                 <Link key={item.id} href={`/${slug}`} className="live-ticker-item">
+                   <span className="ticker-category">{item.category}</span>
+                   <span className="ticker-title">{item.title}</span>
+                 </Link>
+               );
             })}
           </div>
-          
-          {/* Pagination Controls */}
-          <div className="pagination" style={{ marginTop: "3rem", display: "flex", gap: "1rem", justifyContent: "center", alignItems: "center" }}>
-            {page > 1 && (
-              <Link href={`/?page=${page - 1}`} className="btn-pagination">
-                &larr; Previous
-              </Link>
-            )}
-            <span style={{ padding: "0.5rem 1rem", background: "#eee", borderRadius: "4px", fontWeight: "bold" }}>
-              Page {page}
-            </span>
-            {news.length === 12 && (
-              <Link href={`/?page=${page + 1}`} className="btn-pagination">
-                Next &rarr;
-              </Link>
-            )}
-          </div>
-        </>
+        </section>
       )}
+
+      <div className="main-content">
+        <h2 className="section-title">
+          {page === 1 ? "Latest News Feed" : `Latest News - Page ${page}`}
+        </h2>
+
+        {allNews.length === 0 ? (
+          <p>No news found. Maybe the scraper hasn&apos;t run yet?</p>
+        ) : (
+          <>
+            <div className="grid">
+              {allNews.map((item) => {
+                const slug = item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/\/$/, '');
+
+                return (
+                  <div key={item.id} className="news-card">
+                    {item.is_live && <div className="live-badge">Live Now</div>}
+                    {item.image ? (
+                      <img src={item.image} alt={item.title} className="image" />
+                    ) : (
+                      <div className="image-placeholder">No Image</div>
+                    )}
+                    <div className="content">
+                      <div className="meta">
+                        <span className="card-category">{item.category}</span>
+                        <span className="dot">&bull;</span>
+                        <span>{new Date(item.published_date).toLocaleDateString()}</span>
+                      </div>
+                      <h3>{item.title}</h3>
+                      {item.description && (
+                        <p className="desc">{item.description}</p>
+                      )}
+                      <Link href={`/${slug}`} className="read-more">
+                        Read More &rarr;
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="pagination">
+              {page > 1 && (
+                <Link href={`/?page=${page - 1}`} className="btn-pagination">
+                  &larr; Previous
+                </Link>
+              )}
+              <span className="page-indicator">
+                Page {page}
+              </span>
+              {allNews.length === 12 && (
+                <Link href={`/?page=${page + 1}`} className="btn-pagination">
+                  Next &rarr;
+                </Link>
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

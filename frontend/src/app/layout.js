@@ -20,6 +20,7 @@ export default function RootLayout({ children }) {
             <Link href="/category/world">World</Link>
             <Link href="/category/cities">Cities</Link>
             <Link href="/category/technology">Tech</Link>
+            <Link href="/category/live-news">Live News</Link>
             <Link href="/admin">Admin</Link>
           </div>
         </nav>

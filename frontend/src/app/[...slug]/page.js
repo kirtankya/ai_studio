@@ -1,17 +1,23 @@
+import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 
 export const revalidate = 60;
 
 async function getArticleBySlug(slugPath) {
   try {
-    // Join slug parts if it's an array
+    // Join slug parts if it's an array (catch-all route)
     const slug = Array.isArray(slugPath) ? slugPath.join('/') : slugPath;
-    
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
-    const res = await fetch(`${apiUrl}/api/news/slug/${slug}`, { cache: 'no-store' });
-    
-    if (res.ok) return await res.json();
-    return null;
+
+    // Search for the slug path inside the original url column
+    const { data, error } = await supabase
+      .from('news')
+      .select('*')
+      .ilike('url', `%${slug}%`)
+      .limit(1)
+      .single();
+
+    if (error || !data) return null;
+    return data;
   } catch (error) {
     console.error("Error fetching article by slug:", error);
     return null;
@@ -27,7 +33,8 @@ export default async function GenericPage({ params }) {
   }
 
   return (
-    <div className="article-page">
+    <div className="article-page" style={{ position: "relative" }}>
+      {article.is_live && <div className="live-badge" style={{ position: "static", marginBottom: "1rem", width: "fit-content" }}>Live Updates</div>}
       <h1>{article.title}</h1>
       <div className="meta">
         <span style={{ textTransform: "capitalize", fontWeight: "bold" }}>{article.category}</span> &bull; <span>{new Date(article.published_date).toLocaleString()}</span>

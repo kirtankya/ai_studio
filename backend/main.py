@@ -49,6 +49,7 @@ class NewsItem(BaseModel):
     description: Optional[str] = None
     content: Optional[str] = None
     category: Optional[str] = None
+    is_live: bool = False
     published_date: Optional[str] = None
 
 @app.get("/api/news", response_model=List[NewsItem])
