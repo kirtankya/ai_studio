@@ -101,43 +101,45 @@ export default function AdminPage() {
       alert("Error deleting article");
     }
   };
-
   if (!token) {
     return (
-      <div style={{ maxWidth: 400, margin: "4rem auto", padding: "2rem", background: "white", borderRadius: 8, boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
-        <h2 style={{ marginBottom: "1.5rem" }}>Admin Login</h2>
-        <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <div>
-            <label style={{ display: "block", marginBottom: "0.5rem" }}>Username (admin)</label>
-            <input
-              type="text"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-              style={{ width: "100%", padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" }}
-              required
-            />
-          </div>
-          <div>
-            <label style={{ display: "block", marginBottom: "0.5rem" }}>Password (admin123)</label>
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              style={{ width: "100%", padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" }}
-              required
-            />
-          </div>
-          {message && <p style={{ color: "red", fontSize: "0.9rem" }}>{message}</p>}
-          <button type="submit" disabled={loading} style={{ background: "var(--primary-color)", color: "white", padding: "0.75rem", border: "none", borderRadius: 4, cursor: "pointer", fontWeight: "bold" }}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
+      <div className="admin-parent">
+        <div style={{ maxWidth: 400, margin: "4rem auto", padding: "2rem", background: "white", borderRadius: 8, boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
+          <h2 style={{ marginBottom: "1.5rem" }}>Admin Login</h2>
+          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div>
+              <label style={{ display: "block", marginBottom: "0.5rem" }}>Username (admin)</label>
+              <input
+                type="text"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                style={{ width: "100%", padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" }}
+                required
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", marginBottom: "0.5rem" }}>Password (admin123)</label>
+              <input
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                style={{ width: "100%", padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" }}
+                required
+              />
+            </div>
+            {message && <p style={{ color: "red", fontSize: "0.9rem" }}>{message}</p>}
+            <button type="submit" disabled={loading} style={{ background: "var(--primary-color)", color: "white", padding: "0.75rem", border: "none", borderRadius: 4, cursor: "pointer", fontWeight: "bold" }}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="admin-panel">
+    <div className="admin-parent">
+      <div className="admin-panel">
       <div className="header">
         <h2>Admin Dashboard</h2>
         <div style={{ display: "flex", gap: "1rem" }}>
@@ -199,6 +201,7 @@ export default function AdminPage() {
             )}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   );

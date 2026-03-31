@@ -348,7 +348,7 @@ a {
 /* Footer Styles */
 .footer {
   // Hide footer on admin page
-  body:has(.admin-panel) & {
+  body:has(.admin-parent) & {
     display: none;
   }
 
