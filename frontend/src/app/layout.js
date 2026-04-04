@@ -1,14 +1,26 @@
 import "./globals.scss";
 import Link from "next/link";
+import Script from "next/script";
 
 export const metadata = {
   title: "The Daily Insight | Premium Aggregated News Platform",
   description: "A fully automated real-time news platform scraping the latest articles from multiple top sources including Indian Express and Divya Bhaskar.",
+  other: {
+    "google-adsense-account": "ca-pub-2422158282423035",
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2422158282423035"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      </head>
       <body>
         <nav className="navbar">
           <Link href="/" className="logo">
