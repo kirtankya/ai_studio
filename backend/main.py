@@ -9,18 +9,34 @@ from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.background import BackgroundScheduler
 from contextlib import asynccontextmanager
 from .db import get_all_news, get_news_by_category, get_news_by_id, insert_news, delete_news
-from .scraper import scrape
+from .scraper import scrape as scrape_indianexpress
+from .divyabhaskar_scraper import scrape as scrape_divyabhaskar
 
 # SCRAPER_PATH definition removed as we are using Python module
 
 def scheduled_scrape():
-    print("Running scheduled scrape...")
+    print("Running scheduled scrape (all sources)...")
+    total_inserted = 0
+    
+    # --- Indian Express ---
     try:
-        articles = scrape()
-        inserted = insert_news(articles)
-        print(f"Scheduled scrape complete: inserted {inserted} new articles.")
+        ie_articles = scrape_indianexpress()
+        ie_inserted = insert_news(ie_articles)
+        total_inserted += ie_inserted
+        print(f"  Indian Express: inserted {ie_inserted} articles.")
     except Exception as e:
-        print("Scheduled scrape failed:", e)
+        print(f"  Indian Express scrape failed: {e}")
+    
+    # --- Divya Bhaskar ---
+    try:
+        db_articles = scrape_divyabhaskar()
+        db_inserted = insert_news(db_articles)
+        total_inserted += db_inserted
+        print(f"  Divya Bhaskar: inserted {db_inserted} articles.")
+    except Exception as e:
+        print(f"  Divya Bhaskar scrape failed: {e}")
+    
+    print(f"Scheduled scrape complete: total {total_inserted} articles inserted.")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -102,14 +118,35 @@ def get_admin_user(api_key: str = Security(api_key_header)):
     return True
 
 @app.post("/api/admin/scrape", dependencies=[Depends(get_admin_user)])
-def trigger_scrape():
+def trigger_scrape(source: Optional[str] = None):
     try:
-        articles = scrape()
-        inserted = insert_news(articles)
-        return {"message": f"Successfully scraped and inserted {inserted} new articles out of {len(articles)} fetched."}
+        if source == "divyabhaskar":
+            articles = scrape_divyabhaskar()
+            inserted = insert_news(articles)
+            return {"message": f"Divya Bhaskar: scraped {len(articles)}, inserted {inserted}."}
+        elif source == "indianexpress":
+            articles = scrape_indianexpress()
+            inserted = insert_news(articles)
+            return {"message": f"Indian Express: scraped {len(articles)}, inserted {inserted}."}
+        else:
+            # Scrape all sources
+            total_scraped = 0
+            total_inserted = 0
+            
+            ie_articles = scrape_indianexpress()
+            ie_inserted = insert_news(ie_articles)
+            total_scraped += len(ie_articles)
+            total_inserted += ie_inserted
+            
+            db_articles = scrape_divyabhaskar()
+            db_inserted = insert_news(db_articles)
+            total_scraped += len(db_articles)
+            total_inserted += db_inserted
+            
+            return {"message": f"All sources: scraped {total_scraped}, inserted {total_inserted}."}
     except Exception as e:
         print("Scrape error:", e)
-        raise HTTPException(status_code=500, detail="Failed to run scraper")
+        raise HTTPException(status_code=500, detail=f"Failed to run scraper: {str(e)}")
 
 @app.delete("/api/admin/news/{news_id}", dependencies=[Depends(get_admin_user)])
 def delete_news_item(news_id: int):

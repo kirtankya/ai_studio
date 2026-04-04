@@ -331,6 +331,7 @@ def scrape():
 
 
 if __name__ == "__main__":
+    import db
     results = scrape()
     print(f"\n{len(results)} articles scraped. Sample titles:")
     for r in results[:5]:
@@ -339,3 +340,13 @@ if __name__ == "__main__":
     with open("scraped_output.json", "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
     print(f"\nFull output saved to scraped_output.json")
+
+    # Store in the database
+    if results:
+        print("\nSaving to database...")
+        try:
+            inserted = db.insert_news(results)
+            print(f"Successfully stored {inserted} articles in the database.")
+        except Exception as e:
+            print(f"Failed to store articles in the database: {e}")
+

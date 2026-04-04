@@ -24,10 +24,12 @@ def init_db():
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS news (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                source_name TEXT DEFAULT 'indianexpress',
                 title TEXT NOT NULL,
                 slug TEXT UNIQUE,
                 url TEXT UNIQUE NOT NULL,
                 image TEXT,
+                video_url TEXT,
                 description TEXT,
                 content TEXT,
                 category TEXT,
@@ -35,15 +37,17 @@ def init_db():
                 published_date TEXT
             )
         ''')
-        # Try to add slug column if it doesn't exist (primitive migration)
-        try:
-            cursor.execute('ALTER TABLE news ADD COLUMN slug TEXT UNIQUE')
-        except:
-            pass
-        try:
-            cursor.execute('ALTER TABLE news ADD COLUMN is_live INTEGER DEFAULT 0')
-        except:
-            pass
+        # Try to add columns if they don't exist (primitive migration)
+        for col_stmt in [
+            'ALTER TABLE news ADD COLUMN slug TEXT UNIQUE',
+            'ALTER TABLE news ADD COLUMN is_live INTEGER DEFAULT 0',
+            'ALTER TABLE news ADD COLUMN source_name TEXT DEFAULT "indianexpress"',
+            'ALTER TABLE news ADD COLUMN video_url TEXT',
+        ]:
+            try:
+                cursor.execute(col_stmt)
+            except:
+                pass
         conn.commit()
         conn.close()
 
@@ -55,27 +59,82 @@ def insert_news(news_list: List[Dict[str, Any]]):
         return 0
         
     if USE_SUPABASE:
+        # Core columns that always exist in the Supabase table
+        CORE_COLUMNS = {"title", "url", "image", "description", "content", "category", "published_date"}
+        # Optional columns that may or may not exist (until added via Dashboard)
+        OPTIONAL_COLUMNS = {"slug", "is_live", "source_name", "video_url"}
+        
+        def strip_to_columns(items, columns):
+            """Strip items to only include allowed columns."""
+            return [{k: v for k, v in item.items() if k in columns} for item in items]
+        
         try:
-            # Use upsert to update existing rows with full content if URL matches
-            res = supabase.table("news").upsert(news_list, on_conflict="url").execute()
-            inserted = len(res.data)
+            # 1. To bypass RLS (Row-Level Security) "UPDATE" restrictions on existing rows, 
+            # we first filter out articles already in the database.
+            incoming_urls = [n.get("url") for n in news_list if n.get("url")]
+            existing_urls = set()
+            
+            # Fetch existing urls in batches of 100 to avoid long query strings
+            for i in range(0, len(incoming_urls), 100):
+                batch_urls = incoming_urls[i:i+100]
+                existing_res = supabase.table("news").select("url").in_("url", batch_urls).execute()
+                if existing_res.data:
+                    for row in existing_res.data:
+                        existing_urls.add(row["url"])
+            
+            # Filter for strictly new articles
+            new_articles = [n for n in news_list if n.get("url") not in existing_urls]
+            
+            if not new_articles:
+                print(f"Skipping insert: all {len(news_list)} articles already exist in Supabase (avoiding RLS update block).")
+                return 0
+                
+            print(f"Preparing to insert {len(new_articles)} strictly new articles into Supabase...")
+                
+            # Try with all columns first
+            all_columns = CORE_COLUMNS | OPTIONAL_COLUMNS
+            cleaned = strip_to_columns(new_articles, all_columns)
+            res = supabase.table("news").upsert(cleaned, on_conflict="url").execute()
+            inserted = len(res.data) if res.data else 0
         except Exception as e:
-            print("Supabase upsert error:", e)
+            error_msg = str(e)
+            print(f"Supabase insert with all columns failed: {error_msg}")
+            # Fallback: use only core columns
+            try:
+                core_only = strip_to_columns(new_articles, CORE_COLUMNS)
+                res = supabase.table("news").upsert(core_only, on_conflict="url").execute()
+                inserted = len(res.data) if res.data else 0
+                print(f"Supabase fallback (core columns only): inserted {inserted}")
+            except Exception as e2:
+                print(f"Supabase core-only insert also failed: {e2}")
     else:
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
         for news in news_list:
             try:
                 cursor.execute('''
-                    INSERT INTO news (title, slug, url, image, description, category, is_live, published_date, content)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO news (source_name, title, slug, url, image, video_url, description, category, is_live, published_date, content)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ON CONFLICT(url) DO UPDATE SET
                     slug=excluded.slug,
                     description=excluded.description,
                     content=excluded.content,
                     image=excluded.image,
+                    video_url=excluded.video_url,
                     is_live=excluded.is_live
-                ''', (news.get("title"), news.get("slug"), news.get("url"), news.get("image"), news.get("description"), news.get("category"), 1 if news.get("is_live") else 0, news.get("published_date"), news.get("content")))
+                ''', (
+                    news.get("source_name", "indianexpress"),
+                    news.get("title"),
+                    news.get("slug"),
+                    news.get("url"),
+                    news.get("image"),
+                    news.get("video_url"),
+                    news.get("description"),
+                    news.get("category"),
+                    1 if news.get("is_live") else 0,
+                    news.get("published_date"),
+                    news.get("content"),
+                ))
                 inserted += 1
             except Exception as e:
                 print("SQLite upsert error:", e)

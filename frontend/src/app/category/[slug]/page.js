@@ -43,7 +43,7 @@ export default async function CategoryPage({ params, searchParams }) {
         <>
           <div className="grid">
             {news.map((item) => {
-              const slug = item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/\/$/, '');
+              const slug = item.slug || item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/^\/+/, '').replace(/\/$/, '');
 
               return (
                 <div key={item.id} className="news-card">
@@ -63,7 +63,7 @@ export default async function CategoryPage({ params, searchParams }) {
                     {item.description && (
                       <p className="desc">{item.description}</p>
                     )}
-                    <Link href={slug} className="read-more">
+                    <Link href={`/${slug}`} className="read-more">
                       Read More &rarr;
                     </Link>
                   </div>
@@ -72,13 +72,13 @@ export default async function CategoryPage({ params, searchParams }) {
             })}
           </div>
 
-          <div className="pagination" style={{ marginTop: "3rem", display: "flex", gap: "1rem", justifyContent: "center", alignItems: "center" }}>
+          <div className="pagination">
             {page > 1 && (
               <Link href={`/category/${category}/?page=${page - 1}`} className="btn-pagination">
                 &larr; Previous
               </Link>
             )}
-            <span style={{ padding: "0.5rem 1rem", background: "#eee", borderRadius: "4px", fontWeight: "bold" }}>
+            <span className="page-indicator">
               Page {page}
             </span>
             {news.length === 12 && (

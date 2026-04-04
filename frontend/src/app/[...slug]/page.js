@@ -48,8 +48,8 @@ export default async function GenericPage({ params }) {
         {article.content || article.description || "No content found for this article."}
       </div>
 
-      <a href={article.url} target="_blank" rel="noopener noreferrer" className="original-link" style={{ marginTop: "3rem" }}>
-        Read Original Article on Indian Express
+      <a href={article.url} target="_blank" rel="noopener noreferrer" className="original-link" style={{ marginTop: "3rem", display: "inline-block", padding: "0.5rem 1rem", background: "#f0f0f0", borderRadius: "4px", textDecoration: "none", color: "#333", fontWeight: "bold" }}>
+        Read Original Article on {article.source_name === 'divyabhaskar' ? 'Divya Bhaskar' : 'Indian Express'}
       </a>
     </div>
   );

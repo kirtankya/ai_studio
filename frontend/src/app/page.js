@@ -54,7 +54,7 @@ export default async function Home({ searchParams }) {
           </div>
           <div className="live-ticker-container">
             {liveNews.map(item => {
-               const slug = item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/\/$/, '');
+               const slug = item.slug || item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/^\/+/, '').replace(/\/$/, '');
                return (
                  <Link key={item.id} href={`/${slug}`} className="live-ticker-item">
                    <span className="ticker-category">{item.category}</span>
@@ -77,7 +77,7 @@ export default async function Home({ searchParams }) {
           <>
             <div className="grid">
               {allNews.map((item) => {
-                const slug = item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/\/$/, '');
+                const slug = item.slug || item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/^\/+/, '').replace(/\/$/, '');
 
                 return (
                   <div key={item.id} className="news-card">
