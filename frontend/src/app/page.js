@@ -80,28 +80,36 @@ export default async function Home({ searchParams }) {
                 const slug = item.slug || item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/^\/+/, '').replace(/\/$/, '');
 
                 return (
-                  <div key={item.id} className="news-card">
-                    {item.is_live && <div className="live-badge">Live Now</div>}
-                    {item.image ? (
-                      <img src={item.image} alt={item.title} className="image" />
-                    ) : (
-                      <div className="image-placeholder">No Image</div>
-                    )}
+                  <Link key={item.id} href={`/${slug}`} className="news-card">
+                    <div className="image-wrapper">
+                      {item.is_live && <div className="live-badge">Live Now</div>}
+                      {item.image ? (
+                        <img src={item.image} alt={item.title} className="image" />
+                      ) : (
+                        <div className="image-placeholder">
+                          <span className="logo-icon">📰</span>
+                        </div>
+                      )}
+                      <div className="category-tag">{item.category}</div>
+                    </div>
+                    
                     <div className="content">
                       <div className="meta">
-                        <span className="card-category">{item.category}</span>
-                        <span className="dot">&bull;</span>
-                        <span>{new Date(item.published_date).toLocaleDateString()}</span>
+                        <span>{new Date(item.published_date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                        <span className="read-time">• {Math.ceil((item.content?.length || 1000) / 1000)} min read</span>
                       </div>
+                      
                       <h3>{item.title}</h3>
+                      
                       {item.description && (
                         <p className="desc">{item.description}</p>
                       )}
-                      <Link href={`/${slug}`} className="read-more">
-                        Read More &rarr;
-                      </Link>
+                      
+                      <div className="card-footer">
+                        <span className="read-more">Read Article <span className="arrow">&rarr;</span></span>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>

@@ -2,8 +2,8 @@ import "./globals.scss";
 import Link from "next/link";
 
 export const metadata = {
-  title: "AutoNews - Latest Indian Express Articles",
-  description: "A fully automated news platform scraping the latest articles from The Indian Express.",
+  title: "AutoNews | Premium Aggregated News Platform",
+  description: "A fully automated real-time news platform scraping the latest articles from multiple top sources including Indian Express and Divya Bhaskar.",
 };
 
 export default function RootLayout({ children }) {
@@ -12,15 +12,16 @@ export default function RootLayout({ children }) {
       <body>
         <nav className="navbar">
           <Link href="/" className="logo">
-            AutoNews
+            <span className="logo-icon">📰</span> AutoNews
           </Link>
           <div className="nav-links">
             <Link href="/">Home</Link>
-            <Link href="/category/india">India</Link>
-            <Link href="/category/world">World</Link>
-            <Link href="/category/cities">Cities</Link>
-            <Link href="/category/technology">Tech</Link>
-            <Link href="/category/live-news">Live News</Link>
+            <Link href="/category/national">National</Link>
+            <Link href="/category/international">International</Link>
+            <Link href="/category/gujarat">Gujarat</Link>
+            <Link href="/category/sports">Sports</Link>
+            <Link href="/category/business">Business</Link>
+            <Link href="/category/live-news" className="nav-live">Live News</Link>
           </div>
         </nav>
         <main className="container">
@@ -30,15 +31,15 @@ export default function RootLayout({ children }) {
           <div className="footer-container">
             <div className="footer-brand">
               <Link href="/" className="logo">AutoNews</Link>
-              <p>Your automated source for real-time news across India and the globe. Powered by advanced scraping technology.</p>
+              <p>Your premium automated source for real-time news across India and the globe. Powered by advanced Scraping AI.</p>
             </div>
             <div className="footer-links">
-              <h4>News Categories</h4>
+              <h4>Top Categories</h4>
               <nav>
-                <Link href="/category/india">India</Link>
-                <Link href="/category/world">World</Link>
-                <Link href="/category/technology">Technology</Link>
-                <Link href="/category/live-news">Live News</Link>
+                <Link href="/category/national">National</Link>
+                <Link href="/category/international">International</Link>
+                <Link href="/category/gujarat">Gujarat Local</Link>
+                <Link href="/category/business">Business</Link>
               </nav>
             </div>
             <div className="footer-legal">
