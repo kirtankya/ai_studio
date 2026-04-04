@@ -3,7 +3,7 @@ import Link from "next/link";
 import Script from "next/script";
 
 export const metadata = {
-  title: "The Daily Insight | Premium Aggregated News Platform",
+  title: "Samachar Gujrati | Premium Aggregated News Platform",
   description: "A fully automated real-time news platform scraping the latest articles from multiple top sources including Indian Express and Divya Bhaskar.",
   verification: {
     google: "5edafqodVKTivB9xOHmZHs3z8yu5yDNyJ0FjJJqZ7sA",
@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
       <body>
         <nav className="navbar">
           <Link href="/" className="logo">
-            <span className="logo-icon">📰</span> The Daily Insight
+            <span className="logo-icon">📰</span> Samachar Gujrati
           </Link>
           <div className="nav-links">
             <Link href="/">Home</Link>
@@ -45,7 +45,7 @@ export default function RootLayout({ children }) {
         <footer className="footer">
           <div className="footer-container">
             <div className="footer-brand">
-              <Link href="/" className="logo">The Daily Insight</Link>
+              <Link href="/" className="logo">Samachar Gujrati</Link>
               <p>Your premium automated source for real-time news across India and the globe. Powered by advanced Scraping AI.</p>
             </div>
             <div className="footer-links">
@@ -65,7 +65,7 @@ export default function RootLayout({ children }) {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; {new Date().getFullYear()} The Daily Insight. All rights reserved. Follow us on Social Media.</p>
+            <p>&copy; {new Date().getFullYear()} Samachar Gujrati. All rights reserved. Follow us on Social Media.</p>
           </div>
         </footer>
       </body>
