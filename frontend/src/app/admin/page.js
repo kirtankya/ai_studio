@@ -41,13 +41,12 @@ export default function AdminPage() {
     setMessage("");
 
     // Static client-side check
-    const STATIC_ADMIN = "admin";
-    const STATIC_PASS = "admin123";
-    const STATIC_TOKEN = "u1aiiYOCiE2cIqyAyy1PJekbq3Egvtie4S0AddlwB80bPjWRLD2Go9j1miWUVi5GOMjdVwMakj1GAPreSYFfFms8qgzJXgZc2EV6cRv3Q5VKSRzQLIL2wwvtJazcTHeECWGgteuBld6Fs0V8WcBqOIiHWQIoyHPiYzDhihy7ODCeyJfjAcBb3MOlLacvS4AfvwLiQZLdFReioj3C2KRIOPTRFmV0AxDWe2oq6YLx0s5kBgR";
+    const STATIC_ADMIN = "thepixellight025@gmail.com";
+    const STATIC_PASS = "ThePixelLight@025";
 
     if (username === STATIC_ADMIN && password === STATIC_PASS) {
-      setToken(STATIC_TOKEN);
-      localStorage.setItem("adminToken", STATIC_TOKEN);
+      setToken("true");
+      localStorage.setItem("adminToken", "true");
       fetchNews();
     } else {
       setMessage("Invalid credentials (static check)");
@@ -66,10 +65,7 @@ export default function AdminPage() {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
       const res = await fetch(`${apiUrl.replace(/\/$/, '')}/api/admin/scrape`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
+        method: "POST"
       });
       const data = await res.json();
       setMessage(data.message || "Scraped successfully.");
@@ -87,10 +83,7 @@ export default function AdminPage() {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
       const res = await fetch(`${apiUrl.replace(/\/$/, '')}/api/admin/news/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
+        method: "DELETE"
       });
       if (res.ok) {
         setNews(news.filter(n => n.id !== id));
@@ -108,7 +101,7 @@ export default function AdminPage() {
           <h2 style={{ marginBottom: "1.5rem" }}>Admin Login</h2>
           <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             <div>
-              <label style={{ display: "block", marginBottom: "0.5rem" }}>Username (admin)</label>
+              <label style={{ display: "block", marginBottom: "0.5rem" }}>Username</label>
               <input
                 type="text"
                 value={username}
@@ -118,7 +111,7 @@ export default function AdminPage() {
               />
             </div>
             <div>
-              <label style={{ display: "block", marginBottom: "0.5rem" }}>Password (admin123)</label>
+              <label style={{ display: "block", marginBottom: "0.5rem" }}>Password</label>
               <input
                 type="password"
                 value={password}

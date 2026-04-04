@@ -15,7 +15,8 @@ supabase: Client = None
 if USE_SUPABASE:
     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-DB_FILE = "news.db"
+# Use /tmp for SQLite on Vercel due to read-only filesystem (prevents crash)
+DB_FILE = "/tmp/news.db" if os.environ.get("VERCEL") else "news.db"
 
 def init_db():
     if not USE_SUPABASE:

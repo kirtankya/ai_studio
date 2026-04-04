@@ -8,9 +8,9 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.background import BackgroundScheduler
 from contextlib import asynccontextmanager
-from .db import get_all_news, get_news_by_category, get_news_by_id, insert_news, delete_news
-from .scraper import scrape as scrape_indianexpress
-from .divyabhaskar_scraper import scrape as scrape_divyabhaskar
+from db import get_all_news, get_news_by_category, get_news_by_id, insert_news, delete_news
+from scraper import scrape as scrape_indianexpress
+from divyabhaskar_scraper import scrape as scrape_divyabhaskar
 
 # SCRAPER_PATH definition removed as we are using Python module
 
@@ -40,13 +40,25 @@ def scheduled_scrape():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(scheduled_scrape, 'interval', minutes=15)
-    scheduler.start()
-    print("Scheduler started (runs every 15 minutes)")
+    if not os.environ.get("VERCEL"):
+        try:
+            scheduler = BackgroundScheduler()
+            scheduler.add_job(scheduled_scrape, 'interval', minutes=15)
+            scheduler.start()
+            print("Scheduler started (runs every 15 minutes)")
+        except Exception as e:
+            print(f"Scheduler failed to start: {e}")
+    else:
+        print("Running in Vercel - Background scheduling disabled")
+    
     yield
-    scheduler.shutdown()
-    print("Scheduler shut down")
+    
+    if not os.environ.get("VERCEL") and 'scheduler' in locals():
+        try:
+            scheduler.shutdown()
+            print("Scheduler shut down")
+        except:
+            pass
 
 app = FastAPI(title="News Scraper API", lifespan=lifespan)
 
@@ -85,7 +97,7 @@ def read_news_item(news_id: int):
 
 @app.get("/api/news/slug/{slug:path}", response_model=NewsItem)
 def read_news_by_slug_api(slug: str):
-    from .db import get_news_by_slug
+    from db import get_news_by_slug
     news = get_news_by_slug(slug)
     if not news:
         raise HTTPException(status_code=404, detail="News article not found")
@@ -100,8 +112,8 @@ class LoginRequest(BaseModel):
     password: str
 
 # Use environment variables for admin credentials and token
-ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "thepixellight025@gmail.com")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "ThePixelLight@025")
 ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "secure-admin-token")
 
 @app.post("/api/admin/login")
@@ -113,11 +125,10 @@ def admin_login(req: LoginRequest):
 api_key_header = APIKeyHeader(name="Authorization", auto_error=True)
 
 def get_admin_user(api_key: str = Security(api_key_header)):
-    if api_key != f"Bearer {ADMIN_TOKEN}":
-        raise HTTPException(status_code=403, detail="Not authenticated")
+    # Token check removed
     return True
 
-@app.post("/api/admin/scrape", dependencies=[Depends(get_admin_user)])
+@app.post("/api/admin/scrape")
 def trigger_scrape(source: Optional[str] = None):
     try:
         if source == "divyabhaskar":
@@ -148,7 +159,7 @@ def trigger_scrape(source: Optional[str] = None):
         print("Scrape error:", e)
         raise HTTPException(status_code=500, detail=f"Failed to run scraper: {str(e)}")
 
-@app.delete("/api/admin/news/{news_id}", dependencies=[Depends(get_admin_user)])
+@app.delete("/api/admin/news/{news_id}")
 def delete_news_item(news_id: int):
     success = delete_news(news_id)
     if not success:
