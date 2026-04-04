@@ -1,6 +1,7 @@
 import "./globals.scss";
 import Link from "next/link";
 import Script from "next/script";
+import Header from "@/components/Header";
 
 export const metadata = {
   title: "Samachar Gujrati | Premium Aggregated News Platform",
@@ -25,20 +26,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <nav className="navbar">
-          <Link href="/" className="logo">
-            <span className="logo-icon">📰</span> Samachar Gujrati
-          </Link>
-          <div className="nav-links">
-            <Link href="/">Home</Link>
-            <Link href="/category/national">National</Link>
-            <Link href="/category/international">International</Link>
-            <Link href="/category/gujarat">Gujarat</Link>
-            <Link href="/category/sports">Sports</Link>
-            <Link href="/category/business">Business</Link>
-            <Link href="/category/live-news" className="nav-live">Live News</Link>
-          </div>
-        </nav>
+        <Header />
         <main className="container">
           {children}
         </main>
@@ -46,7 +34,15 @@ export default function RootLayout({ children }) {
           <div className="footer-container">
             <div className="footer-brand">
               <Link href="/" className="logo">Samachar Gujrati</Link>
-              <p>Your premium automated source for real-time news across India and the globe. Powered by advanced Scraping AI.</p>
+              <div className="footer-desc">
+                <p>Stay updated with the latest news from Gujarat, India, and around the world all in one place. We bring you accurate, trusted, and real-time updates across multiple categories.</p>
+                <ul className="footer-features">
+                  <li>📢 Breaking News</li>
+                  <li>📊 Trending Topics</li>
+                  <li>🌍 National & International Updates</li>
+                  <li>📱 Simple and easy-to-understand content</li>
+                </ul>
+              </div>
             </div>
             <div className="footer-links">
               <h4>Top Categories</h4>
@@ -65,7 +61,7 @@ export default function RootLayout({ children }) {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; {new Date().getFullYear()} Samachar Gujrati. All rights reserved. Follow us on Social Media.</p>
+            <p>&copy; {new Date().getFullYear()} Samachar Gujrati. All rights reserved.</p>
           </div>
         </footer>
       </body>
