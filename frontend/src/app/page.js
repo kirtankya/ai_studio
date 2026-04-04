@@ -5,7 +5,7 @@ import AdsenseBanner from "@/components/AdsenseBanner";
 
 export const revalidate = 60;
 
-async function getNews(page = 1, pageSize = 12) {
+async function getNews(page = 1, pageSize = 11) {
   try {
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
@@ -79,6 +79,11 @@ export default async function Home({ searchParams }) {
         ) : (
           <>
             <div className="grid">
+              {/* First Card is an In-Feed Ad matching the blog ad style */}
+              <div className="news-card" style={{ display: 'flex', flexDirection: 'column', height: '100%', border: 'none', background: 'transparent', boxShadow: 'none' }}>
+                <AdsenseBanner adSlot="7555769031" adFormat="fluid" />
+              </div>
+
               {allNews.map((item) => (
                 <NewsCard key={item.id} item={item} />
               ))}
@@ -93,7 +98,7 @@ export default async function Home({ searchParams }) {
               <span className="page-indicator">
                 Page {page}
               </span>
-              {allNews.length === 12 && (
+              {allNews.length === 11 && (
                 <Link href={`/?page=${page + 1}`} className="btn-pagination">
                   Next &rarr;
                 </Link>

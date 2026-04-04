@@ -5,7 +5,7 @@ import AdsenseBanner from "@/components/AdsenseBanner";
 
 export const revalidate = 60;
 
-async function getNewsByCategory(category, page = 1, pageSize = 12) {
+async function getNewsByCategory(category, page = 1, pageSize = 11) {
   try {
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
@@ -46,6 +46,11 @@ export default async function CategoryPage({ params, searchParams }) {
       ) : (
         <>
           <div className="grid">
+            {/* First Card is an In-Feed Ad matching the blog ad style */}
+            <div className="news-card" style={{ display: 'flex', flexDirection: 'column', height: '100%', border: 'none', background: 'transparent', boxShadow: 'none' }}>
+              <AdsenseBanner adSlot="7555769031" adFormat="fluid" />
+            </div>
+            
             {news.map((item) => (
               <NewsCard key={item.id} item={item} hideCategoryTag={true} />
             ))}
@@ -60,7 +65,7 @@ export default async function CategoryPage({ params, searchParams }) {
             <span className="page-indicator">
               Page {page}
             </span>
-            {news.length === 12 && (
+            {news.length === 11 && (
               <Link href={`/category/${category}/?page=${page + 1}`} className="btn-pagination">
                 Next &rarr;
               </Link>

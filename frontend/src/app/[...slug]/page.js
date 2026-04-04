@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
+import AdsenseBanner from "@/components/AdsenseBanner";
 
 export const revalidate = 60;
 
@@ -33,24 +34,41 @@ export default async function GenericPage({ params }) {
   }
 
   return (
-    <div className="article-page" style={{ position: "relative" }}>
-      {article.is_live && <div className="live-badge" style={{ position: "static", marginBottom: "1rem", width: "fit-content" }}>Live Updates</div>}
-      <h1>{article.title}</h1>
-      <div className="meta">
-        <span style={{ textTransform: "capitalize", fontWeight: "bold" }}>{article.category}</span> &bull; <span>{new Date(article.published_date).toLocaleString()}</span>
-      </div>
+    <div className="article-layout">
+      {/* Left Ad Column */}
+      <aside className="ad-column left-ad">
+        <div className="sticky-ad">
+          <AdsenseBanner adSlot="7555769031" adFormat="autorelaxed" />
+        </div>
+      </aside>
 
-      {article.image && (
-        <img src={article.image} alt={article.title} className="image" />
-      )}
+      {/* Main Article Content */}
+      <article className="article-page">
+        {article.is_live && <div className="live-badge" style={{ position: "static", marginBottom: "1rem", width: "fit-content" }}>Live Updates</div>}
+        <h1>{article.title}</h1>
+        <div className="meta">
+          <span style={{ textTransform: "capitalize", fontWeight: "bold" }}>{article.category}</span> &bull; <span>{new Date(article.published_date).toLocaleString()}</span>
+        </div>
 
-      <div className="desc" style={{ whiteSpace: "pre-wrap", fontSize: "1.15rem", lineHeight: "1.8", color: "#333" }}>
-        {article.content || article.description || "No content found for this article."}
-      </div>
+        {article.image && (
+          <img src={article.image} alt={article.title} className="image" />
+        )}
 
-      <a href={article.url} target="_blank" rel="noopener noreferrer" className="original-link" style={{ marginTop: "3rem", display: "inline-block", padding: "0.5rem 1rem", background: "#f0f0f0", borderRadius: "4px", textDecoration: "none", color: "#333", fontWeight: "bold" }}>
-        Read Original Article on {article.source_name === 'divyabhaskar' ? 'Divya Bhaskar' : 'Indian Express'}
-      </a>
+        <div className="desc" style={{ whiteSpace: "pre-wrap", fontSize: "1.15rem", lineHeight: "1.8", color: "var(--text-color)" }}>
+          {article.content || article.description || "No content found for this article."}
+        </div>
+
+        <a href={article.url} target="_blank" rel="noopener noreferrer" className="original-link">
+          Read Original Article on {article.source_name === 'divyabhaskar' ? 'Divya Bhaskar' : 'Indian Express'}
+        </a>
+      </article>
+
+      {/* Right Ad Column */}
+      <aside className="ad-column right-ad">
+        <div className="sticky-ad">
+          <AdsenseBanner adSlot="7555769031" adFormat="autorelaxed" />
+        </div>
+      </aside>
     </div>
   );
 }
