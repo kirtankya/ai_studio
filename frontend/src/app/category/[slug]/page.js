@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import NewsCard from "@/components/NewsCard";
+import AdsenseBanner from "@/components/AdsenseBanner";
 
 export const revalidate = 60;
 
@@ -37,6 +38,8 @@ export default async function CategoryPage({ params, searchParams }) {
       <h1 style={{ marginBottom: "2rem", fontSize: "2rem", borderBottom: "2px solid #eee", paddingBottom: "1rem", textTransform: "capitalize" }}>
         Category: {category.replace(/-/g, ' ')}
       </h1>
+      
+      <AdsenseBanner adSlot="9742948675" />
 
       {news.length === 0 ? (
         <p>No news found in this category.</p>

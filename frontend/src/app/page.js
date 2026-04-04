@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import NewsCard from "@/components/NewsCard";
+import AdsenseBanner from "@/components/AdsenseBanner";
 
 export const revalidate = 60;
 
@@ -68,6 +69,7 @@ export default async function Home({ searchParams }) {
       )}
 
       <div className="main-content">
+        <AdsenseBanner adSlot="9742948675" />
         <h2 className="section-title">
           {page === 1 ? "Latest News Feed" : `Latest News - Page ${page}`}
         </h2>
