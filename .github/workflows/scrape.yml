@@ -27,10 +27,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-
     - name: Run Divya Bhaskar Scraper
       working-directory: ./backend
       env:
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
         SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-      run: python divyabhaskar_scraper.py
+      run: python cron_runner.py

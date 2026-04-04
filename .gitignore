@@ -2,3 +2,9 @@ node_modules/
 news.db
 __pycache__/
 *.pyc
+.env
+backend/test_cron.py
+backend/fix_schema.py
+backend/diagnostic.log
+backend/cron_test_output.txt
+backend/divyabhaskar_output.json
