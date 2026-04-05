@@ -48,6 +48,16 @@ def main():
         inserted = insert_news(articles)
         print(f"Inserted {inserted} new articles into Supabase")
         print(f"SUCCESS: Done. {inserted} new, {len(articles)} total scraped.")
+
+        # 5. Cleanup old notifications (older than 2 days)
+        try:
+            from datetime import datetime, timezone, timedelta
+            two_days_ago = (datetime.now(timezone.utc) - timedelta(days=2)).isoformat()
+            supabase.table("notifications").delete().lt("created_at", two_days_ago).execute()
+            print("Cleanup: Deleted old notifications (> 2 days old) successfully.")
+        except Exception as e:
+            print(f"WARNING: Cleanup of old notifications failed: {e}")
+
     except Exception as e:
         print(f"FATAL: Database insert failed: {e}")
         sys.exit(1)

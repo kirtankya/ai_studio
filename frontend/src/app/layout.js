@@ -2,11 +2,23 @@ import "./globals.scss";
 import Link from "next/link";
 import Script from "next/script";
 import Header from "@/components/Header";
+import NotificationListener from "@/components/NotificationListener";
+
+export const viewport = {
+  themeColor: "#E11D48",
+};
 
 export const metadata = {
   metadataBase: new URL("https://samarchar-gujrati.vercel.app"),
   title: "Samachar Gujrati | Premium Aggregated News Platform",
   description: "A fully automated real-time news platform scraping the latest articles from multiple top sources including Indian Express and Divya Bhaskar.",
+  keywords: ["Gujarati news", "Gujarat latest news", "Samachar Gujrati", "Live updates", "Divya Bhaskar news", "Indian Express Gujarati"],
+  authors: [{ name: "Samachar Gujrati Team" }],
+  publisher: "Samachar Gujrati",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
   alternates: {
     canonical: "/",
   },
@@ -30,6 +42,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
+        <NotificationListener />
         <Header />
         <main className="container">
           {children}

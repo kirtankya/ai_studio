@@ -41,6 +41,9 @@ export async function generateMetadata({ params }) {
   return {
     title: `${article.title} - Samachar Gujrati`,
     description: article.description || article.title,
+    keywords: [article.category, "Gujarati news", "latest updates", "Samachar Gujrati"],
+    authors: [{ name: article.source_name === 'divyabhaskar' ? 'Divya Bhaskar' : 'Indian Express' }],
+    publisher: "Samachar Gujrati",
     alternates: {
       canonical: `/${slugPath}`,
     },

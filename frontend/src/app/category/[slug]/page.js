@@ -82,6 +82,9 @@ export async function generateMetadata({ params }) {
   return {
     title: `${capitalizedCategory} News - Latest Updates | Samachar Gujrati`,
     description: `Read the latest and breaking news from ${capitalizedCategory} category in Gujarati on Samachar Gujrati.`,
+    keywords: [`${capitalizedCategory} news`, "Gujarati news", "Samachar Gujrati", "Latest news"],
+    authors: [{ name: "Samachar Gujrati Team" }],
+    publisher: "Samachar Gujrati",
     alternates: {
       canonical: `/category/${slug}`,
     },
