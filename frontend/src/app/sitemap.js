@@ -18,30 +18,48 @@ export default async function sitemap() {
     lastModified: new Date(),
   }));
 
+  // Fetch all news articles directly via Supabase REST API (no SDK)
   try {
     const res = await fetch(
       `${supabaseUrl}/rest/v1/news?select=url,published_date&order=published_date.desc&limit=500`,
       {
         headers: {
           apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
         },
         cache: "force-cache",
       }
     );
 
-    if (!res.ok) return staticRoutes;
+    if (!res.ok) {
+      console.error("Sitemap fetch failed:", res.status, await res.text());
+      return staticRoutes;
+    }
 
     const articles = await res.json();
 
-    const dynamicRoutes = articles.map((item) => ({
-      url: `${baseUrl}/${item.url}`,
-      lastModified: item.published_date || new Date(),
-      changeFrequency: "daily",
-      priority: 0.7,
-    }));
+    const dynamicRoutes = articles.map((item) => {
+      // Build the slug path exactly as the frontend does
+      const slug =
+        item.slug ||
+        item.url
+          .replace(/^https?:\/\/[^\/]+/, "")
+          .replace(/^\/+/, "")
+          .replace(/\/$/, "");
+
+      return {
+        url: `${baseUrl}/${slug}`,
+        lastModified: item.published_date
+          ? new Date(item.published_date)
+          : new Date(),
+        changeFrequency: "daily",
+        priority: 0.7,
+      };
+    });
 
     return [...staticRoutes, ...dynamicRoutes];
   } catch (err) {
+    console.error("Sitemap generation error:", err);
     return staticRoutes;
   }
 }
