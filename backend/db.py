@@ -97,6 +97,17 @@ def insert_news(news_list: List[Dict[str, Any]]):
             cleaned = strip_to_columns(new_articles, all_columns)
             res = supabase.table("news").upsert(cleaned, on_conflict="url").execute()
             inserted = len(res.data) if res.data else 0
+            
+            # --- Trigger Realtime Notification ---
+            # Automatically insert the strictly new articles into the 'notifications' table!
+            try:
+                notification_data = [{"title": n.get("title"), "url": n.get("url"), "slug": n.get("slug")} for n in new_articles]
+                if notification_data:
+                    supabase.table("notifications").insert(notification_data).execute()
+                    print(f"Pushed {len(notification_data)} new articles to notifications table for Realtime alerts!")
+            except Exception as notify_err:
+                print(f"Failed to push to notifications table: {notify_err}")
+                
         except Exception as e:
             error_msg = str(e)
             print(f"Supabase insert with all columns failed: {error_msg}")
