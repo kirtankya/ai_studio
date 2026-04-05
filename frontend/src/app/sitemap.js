@@ -1,9 +1,9 @@
+import { supabase } from '@/lib/supabase';
+
 export const revalidate = 3600;
 
 export default async function sitemap() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://samarchar-gujrati.vercel.app";
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   const staticRoutes = [
     { url: `${baseUrl}`, changeFrequency: "hourly", priority: 1 },
@@ -18,25 +18,20 @@ export default async function sitemap() {
     lastModified: new Date(),
   }));
 
-  // Fetch all news articles directly via Supabase REST API (no SDK)
+  // Fetch all news articles via Supabase JS Client
   try {
-    const res = await fetch(
-      `${supabaseUrl}/rest/v1/news?select=url,published_date&order=published_date.desc&limit=500`,
-      {
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-        },
-        cache: "force-cache",
-      }
-    );
+    const { data: articles, error } = await supabase
+      .from('news')
+      .select('url, published_date')
+      .order('published_date', { ascending: false })
+      .limit(500);
 
-    if (!res.ok) {
-      console.error("Sitemap fetch failed:", res.status, await res.text());
+    if (error) {
+      console.error("Sitemap fetch failed:", error.message);
       return staticRoutes;
     }
 
-    const articles = await res.json();
+    if (!articles) return staticRoutes;
 
     const dynamicRoutes = articles.map((item) => {
       // Build the slug path exactly as the frontend does
