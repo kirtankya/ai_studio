@@ -74,6 +74,24 @@ function getPageNumbers(currentPage, totalPages) {
   return pages;
 }
 
+export async function generateMetadata({ params }) {
+  const { slug } = params;
+  const categoryName = slug.replace(/-/g, ' ');
+  const capitalizedCategory = categoryName.replace(/\b\w/g, l => l.toUpperCase());
+
+  return {
+    title: `${capitalizedCategory} News - Latest Updates | Samachar Gujrati`,
+    description: `Read the latest and breaking news from ${capitalizedCategory} category in Gujarati on Samachar Gujrati.`,
+    alternates: {
+      canonical: `/category/${slug}`,
+    },
+    openGraph: {
+      title: `${capitalizedCategory} News - Latest Updates | Samachar Gujrati`,
+      description: `Read the latest and breaking news from ${capitalizedCategory} category in Gujarati on Samachar Gujrati.`,
+    },
+  };
+}
+
 export default async function CategoryPage({ params, searchParams }) {
   const { slug: category } = params;
   const page = parseInt(searchParams?.page || "1");
@@ -87,7 +105,7 @@ export default async function CategoryPage({ params, searchParams }) {
   const pageNumbers = getPageNumbers(page, totalPages);
 
   return (
-    <div>
+    <div className="main-content">
       <h1 style={{ marginBottom: "2rem", fontSize: "2rem", borderBottom: "2px solid #eee", paddingBottom: "1rem", textTransform: "capitalize" }}>
         Category: {category.replace(/-/g, ' ')}
       </h1>

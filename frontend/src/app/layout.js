@@ -4,8 +4,12 @@ import Script from "next/script";
 import Header from "@/components/Header";
 
 export const metadata = {
+  metadataBase: new URL("https://samarchar-gujrati.vercel.app"),
   title: "Samachar Gujrati | Premium Aggregated News Platform",
   description: "A fully automated real-time news platform scraping the latest articles from multiple top sources including Indian Express and Divya Bhaskar.",
+  alternates: {
+    canonical: "/",
+  },
   verification: {
     google: "5edafqodVKTivB9xOHmZHs3z8yu5yDNyJ0FjJJqZ7sA",
   },

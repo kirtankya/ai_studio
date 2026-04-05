@@ -25,6 +25,39 @@ async function getArticleBySlug(slugPath) {
   }
 }
 
+export async function generateMetadata({ params }) {
+  const { slug } = params;
+  const article = await getArticleBySlug(slug);
+
+  if (!article) {
+    return {
+      title: "Article Not Found | Samachar Gujrati",
+    };
+  }
+
+  // Ensure slugPath is structured properly for the URL
+  const slugPath = Array.isArray(slug) ? slug.join('/') : slug;
+
+  return {
+    title: `${article.title} - Samachar Gujrati`,
+    description: article.description || article.title,
+    alternates: {
+      canonical: `/${slugPath}`,
+    },
+    openGraph: {
+      title: article.title,
+      description: article.description || article.title,
+      images: article.image ? [{ url: article.image }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.description || article.title,
+      images: article.image ? [article.image] : [],
+    },
+  };
+}
+
 export default async function GenericPage({ params }) {
   const { slug } = params;
   const article = await getArticleBySlug(slug);
