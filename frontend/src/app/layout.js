@@ -74,6 +74,10 @@ export default function RootLayout({ children }) {
               <h4>Quick Links</h4>
               <nav>
                 <Link href="/">Home</Link>
+                <Link href="/about">About Us</Link>
+                <Link href="/contact">Contact</Link>
+                <Link href="/privacy-policy">Privacy Policy</Link>
+                <Link href="/terms">Terms</Link>
               </nav>
             </div>
           </div>
