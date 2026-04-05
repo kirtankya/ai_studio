@@ -8,12 +8,12 @@ export default async function sitemap() {
   // Static pages
   const staticRoutes = [
     { url: `${baseUrl}`, changeFrequency: "daily", priority: 1 },
-    { url: `${baseUrl}/category/national`, changeFrequency: "daily", priority: 0.9 },
-    { url: `${baseUrl}/category/international`, changeFrequency: "daily", priority: 0.9 },
-    { url: `${baseUrl}/category/gujarat`, changeFrequency: "daily", priority: 0.9 },
-    { url: `${baseUrl}/category/sports`, changeFrequency: "daily", priority: 0.9 },
-    { url: `${baseUrl}/category/business`, changeFrequency: "daily", priority: 0.9 },
-    { url: `${baseUrl}/category/live-news`, changeFrequency: "daily", priority: 0.9 },
+    { url: `${baseUrl}/category/national`, changeFrequency: "daily", priority: 1 },
+    { url: `${baseUrl}/category/international`, changeFrequency: "daily", priority: 1 },
+    { url: `${baseUrl}/category/gujarat`, changeFrequency: "daily", priority: 1 },
+    { url: `${baseUrl}/category/sports`, changeFrequency: "daily", priority: 1 },
+    { url: `${baseUrl}/category/business`, changeFrequency: "daily", priority: 1 },
+    { url: `${baseUrl}/category/live-news`, changeFrequency: "daily", priority: 1 },
   ].map((route) => ({
     ...route,
     lastModified: new Date().toISOString(),
@@ -54,7 +54,7 @@ export default async function sitemap() {
           ? new Date(item.published_date).toISOString()
           : new Date().toISOString(),
         changeFrequency: "daily",
-        priority: 0.8,
+        priority: 1,
       };
     });
 
