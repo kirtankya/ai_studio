@@ -10,7 +10,6 @@ export default function TermsPage() {
     <div className="article-page">
       <h1>Terms of Service</h1>
       <div className="desc">
-        <p><strong>Effective Date:</strong> January 1, 2024</p>
         <p>Welcome to <strong>Samachar Gujrati</strong>. These terms and conditions outline the rules and regulations for the use of our website. By accessing this website, we assume you accept these terms and conditions. Do not continue to use Samachar Gujrati if you do not agree to take all of the terms and conditions stated on this page.</p>
 
         <h3 style={{ marginTop: '2rem', marginBottom: '0.75rem', color: 'var(--primary-color)' }}>1. Platform Nature & Aggregation Disclaimer</h3>

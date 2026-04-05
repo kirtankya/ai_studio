@@ -10,7 +10,6 @@ export default function PrivacyPolicyPage() {
     <div className="article-page">
       <h1>Privacy Policy</h1>
       <div className="desc">
-        <p><strong>Effective Date:</strong> January 1, 2024</p>
         <p>At <strong>Samachar Gujrati</strong> (accessible from <a href="https://samarchar-gujrati.vercel.app" style={{ color: 'var(--primary-color)' }}>samarchar-gujrati.vercel.app</a>), one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by us and how we use it.</p>
         
         <h3 style={{ marginTop: '2rem', marginBottom: '0.75rem', color: 'var(--primary-color)' }}>1. Log Files</h3>
