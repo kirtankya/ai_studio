@@ -15,7 +15,7 @@ export default async function sitemap() {
     { url: `${baseUrl}/category/live-news`, changeFrequency: "hourly", priority: 1 },
   ].map((route) => ({
     ...route,
-    lastModified: new Date(),
+    lastModified: new Date().toISOString(),
   }));
 
   // Fetch all news articles via Supabase JS Client
@@ -45,8 +45,8 @@ export default async function sitemap() {
       return {
         url: `${baseUrl}/${slug}`,
         lastModified: item.published_date
-          ? new Date(item.published_date)
-          : new Date(),
+          ? new Date(item.published_date).toISOString()
+          : new Date().toISOString(),
         changeFrequency: "daily",
         priority: 0.7,
       };
