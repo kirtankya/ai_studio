@@ -24,7 +24,7 @@ export default async function sitemap() {
       .from('news')
       .select('url, published_date')
       .order('published_date', { ascending: false })
-      .limit(500);
+      .limit(30);
 
     if (error) {
       console.error("Sitemap fetch failed:", error.message);
