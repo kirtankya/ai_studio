@@ -592,6 +592,8 @@ a {
     font-size: 1.15rem;
     line-height: 1.8;
     color: var(--text-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
     
     p {
       margin-bottom: 1.5rem;
@@ -951,4 +953,22 @@ a {
   .grid {
     grid-template-columns: 1fr;
   }
-}
+
+  .container {
+    padding: 1.5rem 1rem;
+  }
+
+  .article-page {
+    padding: 1.5rem 1rem;
+    border-radius: 8px;
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .desc {
+      font-size: 1rem;
+    }
+  }
+}
