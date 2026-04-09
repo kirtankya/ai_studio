@@ -205,7 +205,6 @@ export default async function Home({ searchParams }) {
           <h2 className="section-title">
             {page === 1 ? "Latest News Feed" : `Latest News — Page ${page}`}
           </h2>
-          <span className="section-title-count">{totalCount} articles total</span>
         </div>
 
         {gridNews.length === 0 ? (
