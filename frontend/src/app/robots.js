@@ -7,6 +7,6 @@ export default function robots() {
       allow: "/",
       disallow: "/admin",
     },
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${baseUrl}/sitemap-news.xml`,
   };
 }
