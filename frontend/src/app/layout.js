@@ -1,11 +1,18 @@
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.scss";
 import Link from "next/link";
 import Script from "next/script";
 import Header from "@/components/Header";
 import NotificationListener from "@/components/NotificationListener";
 
+const jakarta = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-jakarta'
+});
+
 export const viewport = {
-  themeColor: "#E11D48",
+  themeColor: "#4F46E5", // Changed to match our new premium Indigo theme
 };
 
 export const metadata = {
@@ -32,7 +39,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${jakarta.variable}`}>
       <head>
         <Script
           async
@@ -58,7 +65,7 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body>
+      <body className={jakarta.className}>
         <NotificationListener />
         <Header />
         <main className="container">

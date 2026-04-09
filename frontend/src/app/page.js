@@ -135,8 +135,8 @@ export default async function Home({ searchParams }) {
                 <AdsenseBanner adSlot="7555769031" adFormat="fluid" />
               </div>
 
-              {allNews.map((item) => (
-                <NewsCard key={item.id} item={item} />
+              {allNews.map((item, idx) => (
+                <NewsCard key={item.id} item={item} index={idx} />
               ))}
             </div>
 
