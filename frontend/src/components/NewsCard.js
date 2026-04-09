@@ -1,31 +1,28 @@
 import Link from "next/link";
 import Image from "next/image";
 
-export default function NewsCard({ item, hideCategoryTag = false, index = 0 }) {
+export default function NewsCard({ item, hideCategoryTag = false }) {
   const slug = item.slug || item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/^\/+/, '').replace(/\/$/, '');
 
-  // We assign a dynamic staggered animation delay class
-  const staggerClass = index < 15 ? "stagger-enter" : "";
-
   return (
-    <Link href={`/${slug}`} className={`news-card ${staggerClass}`}>
+    <Link href={`/${slug}`} className="news-card">
       <div className="image-wrapper">
-        {item.is_live && <div className="live-badge">Live Now</div>}
+        {item.is_live && <div className="live-badge">Live Updates</div>}
         {item.image ? (
-          <div className="image-scale">
+          <div className="image-scale" style={{ width: '100%', height: '100%', position: 'relative' }}>
             <Image 
               src={item.image} 
               alt={item.title} 
               fill
               unoptimized={false}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="image" 
+              style={{ objectFit: 'cover' }}
               placeholder="blur"
               blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjbQg61aAAAADUlEQVQYV2NgYGD4DwABBAEAcCBlCwAAAABJRU5ErkJggg=="
             />
           </div>
         ) : (
-          <div className="image-scale skeleton" style={{ width: '100%', height: '100%' }}></div>
+          <div className="skeleton" style={{ width: '100%', height: '100%' }}></div>
         )}
         {!hideCategoryTag && <div className="category-tag">{item.category || "News"}</div>}
       </div>
@@ -43,7 +40,7 @@ export default function NewsCard({ item, hideCategoryTag = false, index = 0 }) {
         )}
         
         <div className="card-footer">
-          <span className="read-more">Read Article <span className="arrow">&rarr;</span></span>
+          <span className="read-more">Read Full Story &raquo;</span>
         </div>
       </div>
     </Link>

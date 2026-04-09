@@ -106,15 +106,17 @@ export default async function Home({ searchParams }) {
             </div>
           </div>
           <div className="live-ticker-container">
-            {liveNews.map(item => {
-               const slug = item.slug || item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/^\/+/, '').replace(/\/$/, '');
-               return (
-                 <Link key={item.id} href={`/${slug}`} className="live-ticker-item">
-                   <span className="ticker-category">{item.category}</span>
-                   <span className="ticker-title">{item.title}</span>
-                 </Link>
-               );
-            })}
+            <div className="ticker-track">
+              {[...liveNews, ...liveNews].map((item, i) => {
+                 const slug = item.slug || item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/^\/+/, '').replace(/\/$/, '');
+                 return (
+                   <Link key={`${item.id}-${i}`} href={`/${slug}`} className="live-ticker-item">
+                     <span className="ticker-category">{item.category}</span>
+                     <span className="ticker-title">{item.title}</span>
+                   </Link>
+                 );
+              })}
+            </div>
           </div>
         </section>
       )}
