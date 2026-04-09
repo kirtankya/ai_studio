@@ -106,6 +106,11 @@ export default function RootLayout({ children }) {
                 <Link href="/category/gujarat">🏠 Gujarat</Link>
                 <Link href="/category/sports">⚽ Sports</Link>
                 <Link href="/category/business">📊 Business</Link>
+                <Link href="/category/entertainment">🎬 Entertainment</Link>
+                <Link href="/category/lifestyle">💆 Lifestyle</Link>
+                <Link href="/category/dharm-darshan">🕉️ Dharm Darshan</Link>
+                <Link href="/category/utility">🔧 Utility</Link>
+                <Link href="/category/magazine">📖 Magazine</Link>
               </nav>
             </div>
             <div className="footer-legal">

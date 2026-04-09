@@ -35,6 +35,8 @@ RSS_FEEDS = {
     "Dharm Darshan":  "https://www.divyabhaskar.co.in/rss-v1--category-11256.xml",
     "Utility":        "https://www.divyabhaskar.co.in/rss-v1--category-10695.xml",
     "DvB Original":   "https://www.divyabhaskar.co.in/rss-v1--category-11879.xml",
+    "Magazine":       "https://www.divyabhaskar.co.in/rss-v1--category-14980.xml",
+    "NRG":            "https://www.divyabhaskar.co.in/rss-v1--category-7453.xml",
 }
 
 HEADERS = {

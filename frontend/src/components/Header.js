@@ -67,6 +67,11 @@ export default function Header() {
         <Link href="/category/gujarat" onClick={closeMenu}>Gujarat</Link>
         <Link href="/category/sports" onClick={closeMenu}>Sports</Link>
         <Link href="/category/business" onClick={closeMenu}>Business</Link>
+        <Link href="/category/entertainment" onClick={closeMenu}>Entertainment</Link>
+        <Link href="/category/lifestyle" onClick={closeMenu}>Lifestyle</Link>
+        <Link href="/category/dharm-darshan" onClick={closeMenu}>Dharm</Link>
+        <Link href="/category/utility" onClick={closeMenu}>Utility</Link>
+        <Link href="/category/magazine" onClick={closeMenu}>Magazine</Link>
         <Link href="/category/live-news" className="nav-live" onClick={closeMenu}>Live News</Link>
         
         {/* Notification Bell Button */}

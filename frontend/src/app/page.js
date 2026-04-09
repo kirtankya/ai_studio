@@ -183,6 +183,21 @@ export default async function Home({ searchParams }) {
             <Link href="/category/business" className="category-pill">
               <span className="category-pill__icon">📊</span> Business
             </Link>
+            <Link href="/category/entertainment" className="category-pill">
+              <span className="category-pill__icon">🎬</span> Entertainment
+            </Link>
+            <Link href="/category/lifestyle" className="category-pill">
+              <span className="category-pill__icon">💆</span> Lifestyle
+            </Link>
+            <Link href="/category/dharm-darshan" className="category-pill">
+              <span className="category-pill__icon">🕉️</span> Dharm
+            </Link>
+            <Link href="/category/utility" className="category-pill">
+              <span className="category-pill__icon">🔧</span> Utility
+            </Link>
+            <Link href="/category/magazine" className="category-pill">
+              <span className="category-pill__icon">📖</span> Magazine
+            </Link>
           </div>
         )}
 
