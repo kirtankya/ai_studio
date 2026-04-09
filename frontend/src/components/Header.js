@@ -6,11 +6,18 @@ import { useState, useEffect } from "react";
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [permission, setPermission] = useState("default");
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined" && "Notification" in window) {
       setPermission(Notification.permission);
     }
+
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleMenu = () => {
@@ -37,10 +44,11 @@ export default function Header() {
   };
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       <div className="navbar-brand">
         <Link href="/" className="logo" onClick={closeMenu}>
-          <span className="logo-icon">📰</span> Samachar Gujrati
+          <span className="logo-icon">📰</span>
+          <span className="logo-text">Samachar <span className="logo-accent">Gujrati</span></span>
         </Link>
         <button 
           className={`menu-toggle ${isOpen ? "active" : ""}`} 
@@ -66,14 +74,8 @@ export default function Header() {
           <button 
             onClick={requestNotificationPermission}
             title="Enable Notifications"
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "1.2rem",
-              padding: "0.2rem 0.5rem",
-              marginLeft: "0.5rem"
-            }}
+            className="nav-bell"
+            aria-label="Enable Notifications"
           >
             🔔
           </button>

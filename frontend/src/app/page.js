@@ -5,7 +5,7 @@ import AdsenseBanner from "@/components/AdsenseBanner";
 
 export const revalidate = 60;
 
-const PAGE_SIZE = 11;
+const PAGE_SIZE = 12;
 
 async function getNews(page = 1) {
   try {
@@ -94,9 +94,13 @@ export default async function Home({ searchParams }) {
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
   const pageNumbers = getPageNumbers(page, totalPages);
 
+  // Split news: first item as hero, rest as grid
+  const heroNews = page === 1 && allNews.length > 0 ? allNews[0] : null;
+  const gridNews = page === 1 && heroNews ? allNews.slice(1) : allNews;
+
   return (
     <div className="home-container">
-      {/* Live News Section (Horizontal) */}
+      {/* Live News Ticker */}
       {page === 1 && liveNews.length > 0 && (
         <section className="live-section">
           <div className="section-header">
@@ -122,22 +126,87 @@ export default async function Home({ searchParams }) {
       )}
 
       <div className="main-content">
-        <AdsenseBanner adSlot="9742948675" />
-        <h2 className="section-title">
-          {page === 1 ? "Latest News Feed" : `Latest News - Page ${page}`}
-        </h2>
+        {/* Hero Section — only on page 1 */}
+        {page === 1 && (
+          <div className="home-hero">
+            <div className="home-hero__welcome">
+              <span className="home-hero__badge">📰 Samachar Gujrati</span>
+              <h1 className="home-hero__title">Stay Informed, Stay Ahead</h1>
+              <p className="home-hero__desc">
+                Your trusted source for real-time news from Gujarat, India, and around the world.
+                Breaking stories, trending topics, and deep analysis — all in one place.
+              </p>
+              <div className="home-hero__stats">
+                <div className="home-hero__stat">
+                  <span className="home-hero__stat-number">{totalCount.toLocaleString()}+</span>
+                  <span className="home-hero__stat-label">Articles</span>
+                </div>
+                <div className="home-hero__stat-divider" />
+                <div className="home-hero__stat">
+                  <span className="home-hero__stat-number">6+</span>
+                  <span className="home-hero__stat-label">Categories</span>
+                </div>
+                <div className="home-hero__stat-divider" />
+                <div className="home-hero__stat">
+                  <span className="home-hero__stat-number">24/7</span>
+                  <span className="home-hero__stat-label">Updates</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
-        {allNews.length === 0 ? (
-          <p>No news found. Maybe the scraper hasn&apos;t run yet?</p>
+        {/* Featured / Hero Card */}
+        {heroNews && (
+          <section className="featured-section">
+            <NewsCard item={heroNews} featured={true} />
+          </section>
+        )}
+
+        <AdsenseBanner adSlot="9742948675" />
+
+        {/* Category Quick Links */}
+        {page === 1 && (
+          <div className="category-pills">
+            <Link href="/category/national" className="category-pill">
+              <span className="category-pill__icon">🇮🇳</span> National
+            </Link>
+            <Link href="/category/international" className="category-pill">
+              <span className="category-pill__icon">🌍</span> International
+            </Link>
+            <Link href="/category/gujarat" className="category-pill">
+              <span className="category-pill__icon">🏠</span> Gujarat
+            </Link>
+            <Link href="/category/sports" className="category-pill">
+              <span className="category-pill__icon">⚽</span> Sports
+            </Link>
+            <Link href="/category/business" className="category-pill">
+              <span className="category-pill__icon">📊</span> Business
+            </Link>
+          </div>
+        )}
+
+        <div className="section-title-row">
+          <h2 className="section-title">
+            {page === 1 ? "Latest News Feed" : `Latest News — Page ${page}`}
+          </h2>
+          <span className="section-title-count">{totalCount} articles total</span>
+        </div>
+
+        {gridNews.length === 0 ? (
+          <div className="empty-state">
+            <span className="empty-state__icon">📭</span>
+            <p className="empty-state__text">No news found. Maybe the scraper hasn&apos;t run yet?</p>
+          </div>
         ) : (
           <>
             <div className="grid">
-              {/* First Card is an In-Feed Ad matching the blog ad style */}
-              <div className="news-card" style={{ display: 'flex', flexDirection: 'column', height: '100%', border: 'none', background: 'transparent', boxShadow: 'none' }}>
+              {/* First Card is an In-Feed Ad */}
+              <div className="news-card news-card--ad">
                 <AdsenseBanner adSlot="7555769031" adFormat="fluid" />
               </div>
 
-              {allNews.map((item, idx) => (
+              {gridNews.map((item, idx) => (
                 <NewsCard key={item.id} item={item} index={idx} />
               ))}
             </div>
