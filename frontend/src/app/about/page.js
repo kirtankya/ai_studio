@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'About Us - Samachar Gujrati',
-  description: 'Learn more about Samachar Gujrati, your trusted premium news aggregator for Gujarat, National, and International news.',
+  description: 'Learn about Samachar Gujrati — a free Gujarati news aggregation platform bringing you the latest from Gujarat, India, and the world.',
 };
 
 export default function AboutPage() {
@@ -14,7 +14,7 @@ export default function AboutPage() {
         <span className="static-page__hero-badge">📖 About</span>
         <h1 className="static-page__hero-title">About Samachar Gujrati</h1>
         <p className="static-page__hero-subtitle">
-          Your trusted, real-time news aggregation platform delivering accurate and comprehensive coverage from Gujarat and beyond.
+          We started this platform with a simple idea — make it easier for Gujarati readers to find all their news in one place, without jumping between multiple websites.
         </p>
       </div>
 
@@ -23,46 +23,41 @@ export default function AboutPage() {
         <section className="static-page__section">
           <div className="static-page__section-header">
             <span className="static-page__section-icon">🎯</span>
-            <h2>Our Mission</h2>
+            <h2>Why We Built This</h2>
           </div>
           <p>
-            In the digital age, information is abundant but finding verified and relevant news can be time-consuming.
-            Our mission at Samachar Gujrati is to simplify your daily news consumption. We aim to empower the citizens
-            of Gujarat and the global Gujarati diaspora by providing a unified, clutter-free platform where top headlines,
-            breaking stories, and deep-dive analytics are instantly accessible.
+            If you&apos;re someone who reads Gujarati news daily, you probably know the struggle. You open Divya Bhaskar for Gujarat news, then switch to another site for sports, then another for business updates. It takes time, and half the day goes by just catching up.
+          </p>
+          <p>
+            That&apos;s exactly why we created Samachar Gujrati. We pull in news from trusted sources like Divya Bhaskar and organize everything neatly — so you can read Gujarat, National, International, Sports, Business, Entertainment, and more, all from a single page. No app downloads, no sign-ups, no clutter. Just open the site and start reading.
           </p>
         </section>
 
         <section className="static-page__section">
           <div className="static-page__section-header">
             <span className="static-page__section-icon">⚡</span>
-            <h2>What We Do</h2>
+            <h2>What You Get Here</h2>
           </div>
-          <p>
-            In today&apos;s fast-paced world, staying informed should not be difficult. Our platform is built on modern
-            technology designed to monitor multiple trusted news sources and bring the most relevant stories directly to
-            your screen.
-          </p>
           <div className="static-page__features">
             <div className="static-page__feature-card">
               <span className="static-page__feature-emoji">🏠</span>
-              <h4>Local &amp; Regional</h4>
-              <p>Immediate updates from Ahmedabad, Surat, Rajkot, Vadodara, and every corner of Gujarat.</p>
+              <h4>Gujarat &amp; Local News</h4>
+              <p>Get the latest from Ahmedabad, Surat, Rajkot, Vadodara, and every district. Updated round the clock.</p>
             </div>
             <div className="static-page__feature-card">
               <span className="static-page__feature-emoji">🇮🇳</span>
-              <h4>National News</h4>
-              <p>Comprehensive coverage of Indian politics, economy, and social affairs.</p>
+              <h4>National Coverage</h4>
+              <p>Indian politics, government policies, economy, and all the major happenings across the country.</p>
             </div>
             <div className="static-page__feature-card">
               <span className="static-page__feature-emoji">🌍</span>
-              <h4>Global Updates</h4>
-              <p>Keeping you informed with major international events and developments.</p>
+              <h4>World News</h4>
+              <p>Stay connected with what&apos;s happening globally — from wars to weather, from tech to trade deals.</p>
             </div>
             <div className="static-page__feature-card">
               <span className="static-page__feature-emoji">📊</span>
-              <h4>Sports &amp; Business</h4>
-              <p>Live scores, market trends, and expert analysis all in one place.</p>
+              <h4>Sports, Business &amp; More</h4>
+              <p>Cricket scores, stock market updates, Bollywood gossip, lifestyle tips, and spiritual content — all here.</p>
             </div>
           </div>
         </section>
@@ -70,33 +65,32 @@ export default function AboutPage() {
         <section className="static-page__section">
           <div className="static-page__section-header">
             <span className="static-page__section-icon">🏆</span>
-            <h2>Why Choose Us?</h2>
+            <h2>How This Works</h2>
           </div>
           <p>
-            Unlike traditional newspapers and singular media outlets, we don&apos;t present a single viewpoint.
-            By aggregating from a multitude of reliable sources, we offer our readers a 360-degree perspective on current events.
-            We believe in speed, accuracy, and an uninterrupted user experience — which is why our platform is optimized for
-            seamless reading on both mobile and desktop devices.
+            Our system automatically monitors RSS feeds from Divya Bhaskar and collects the latest published articles. Every few hours, fresh news gets added to the site. We don&apos;t write any of the articles ourselves — we simply collect them, organize them by category, and present them in a clean, easy-to-read format.
+          </p>
+          <p>
+            Think of us like a newspaper stand that collects papers from different publishers and puts them all in one rack for you. The news comes from the original source, we just make it convenient for you to browse.
           </p>
         </section>
 
         <section className="static-page__section">
           <div className="static-page__section-header">
             <span className="static-page__section-icon">🤝</span>
-            <h2>Our Commitment to Publishers</h2>
+            <h2>Credit Where It&apos;s Due</h2>
           </div>
           <p>
-            As an ethical aggregator, we deeply respect the hard work of journalists and media houses primarily like
-            Divya Bhaskar. For every piece of news we aggregate, we explicitly mention the original publisher&apos;s
-            name as the <strong>Source</strong>. We only display necessary excerpts to inform our readers and always
-            provide a direct &quot;Read Full Article&quot; link back to the original website. This ensures that the
-            original publishers receive their rightful credit, recognition, and direct traffic from our platform.
+            We have a lot of respect for the journalists and news teams at Divya Bhaskar and other publications. Every article on our site clearly shows the original source name. We also provide a direct link back to the original article so readers can visit the publisher&apos;s website and read the full story there.
+          </p>
+          <p>
+            We don&apos;t claim any of the news content as our own. If any publisher wants their content removed from our platform, they can simply <Link href="/contact" className="static-page__inline-link">contact us</Link> and we&apos;ll take it down right away.
           </p>
         </section>
 
         {/* CTA */}
         <div className="static-page__cta">
-          <p>Thank you for making <strong>Samachar Gujrati</strong> your daily habit.</p>
+          <p>Thanks for reading — now go catch up on the news!</p>
           <Link href="/" className="static-page__cta-btn">
             ← Back to Latest News
           </Link>

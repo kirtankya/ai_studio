@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Privacy Policy - Samachar Gujrati',
-  description: 'Read the privacy policy of Samachar Gujrati to understand how we handle your data.',
+  description: 'Our privacy policy explains what data we collect, how we use cookies, and your rights when you visit Samachar Gujrati.',
 };
 
 export default function PrivacyPolicyPage() {
@@ -14,7 +14,7 @@ export default function PrivacyPolicyPage() {
         <span className="static-page__hero-badge">🔒 Privacy</span>
         <h1 className="static-page__hero-title">Privacy Policy</h1>
         <p className="static-page__hero-subtitle">
-          At Samachar Gujrati, your privacy is our priority. This policy explains how we collect, use, and protect your information.
+          We keep things simple — we don&apos;t ask for your personal information, and we don&apos;t sell anything. Here&apos;s exactly what happens when you visit our site.
         </p>
       </div>
 
@@ -27,84 +27,99 @@ export default function PrivacyPolicyPage() {
         <section className="static-page__section static-page__section--numbered">
           <div className="static-page__section-header">
             <span className="static-page__section-number">1</span>
-            <h2>Log Files</h2>
+            <h2>What We Collect (Not Much, Honestly)</h2>
           </div>
           <p>
-            Samachar Gujrati follows a standard procedure of using log files. These files log visitors when they visit websites.
-            All hosting companies do this and a part of hosting services&apos; analytics. The information collected by log files
-            include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp,
-            referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally
-            identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users&apos;
-            movement on the website, and gathering demographic information.
+            When you visit Samachar Gujrati, our server automatically logs some basic technical details — things like your IP address, which browser you&apos;re using, what time you visited, and which pages you looked at. This is standard stuff that every website on the internet does. It helps us understand how many people visit the site and which news categories are most popular.
+          </p>
+          <p>
+            We <strong>do not</strong> collect your name, email, phone number, or any other personal details. You don&apos;t need to create an account or fill out any form to use this site.
           </p>
         </section>
 
         <section className="static-page__section static-page__section--numbered">
           <div className="static-page__section-header">
             <span className="static-page__section-number">2</span>
-            <h2>Cookies and Web Beacons</h2>
+            <h2>Cookies — What Are They and Why We Use Them</h2>
           </div>
           <p>
-            Like any other website, Samachar Gujrati uses &quot;cookies&quot;. These cookies are used to store information including
-            visitors&apos; preferences, and the pages on the website that the visitor accessed or visited. The information is used to
-            optimize the users&apos; experience by customizing our web page content based on visitors&apos; browser type and/or other information.
+            Cookies are small text files that get saved on your device when you visit a website. We use cookies for two main things:
+          </p>
+          <p>
+            <strong>1. Remembering your preferences:</strong> For example, when you accept our cookie notice, we save a cookie so we don&apos;t ask you again every time you visit.
+          </p>
+          <p>
+            <strong>2. Ads:</strong> We show Google AdSense ads on our site to keep it free for everyone. Google may use cookies to show you ads based on your interests. You can control this through your Google account settings or by visiting{" "}
+            <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="static-page__inline-link">
+              Google&apos;s Ad Settings
+            </a>.
           </p>
         </section>
 
         <section className="static-page__section static-page__section--numbered">
           <div className="static-page__section-header">
             <span className="static-page__section-number">3</span>
-            <h2>Google DoubleClick DART Cookie</h2>
+            <h2>Google AdSense and Third-Party Ads</h2>
           </div>
           <p>
-            Google is one of a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site
-            visitors based upon their visit to our site and other sites on the internet. However, visitors may choose to decline
-            the use of DART cookies by visiting the Google ad and content network Privacy Policy at:{" "}
-            <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="static-page__inline-link">
-              Google Ads Privacy Policy
-            </a>
+            We use Google AdSense to display advertisements. Google uses something called a DART cookie to serve ads based on your previous visits to our site and other websites you&apos;ve been to. This helps show you more relevant ads instead of random ones.
+          </p>
+          <p>
+            If you don&apos;t want personalized ads, you can opt out anytime at{" "}
+            <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="static-page__inline-link">
+              Google Ad Settings
+            </a>. You can also install the{" "}
+            <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" className="static-page__inline-link">
+              Google Analytics Opt-out Browser Add-on
+            </a>{" "}
+            if you prefer not to be tracked at all.
           </p>
         </section>
 
         <section className="static-page__section static-page__section--numbered">
           <div className="static-page__section-header">
             <span className="static-page__section-number">4</span>
-            <h2>Third-Party Privacy Policies</h2>
+            <h2>Third-Party Websites</h2>
           </div>
           <p>
-            Samachar Gujrati&apos;s Privacy Policy does not apply to other advertisers or external websites (including the publishers
-            whose news we aggregate). Thus, we are advising you to consult the respective Privacy Policies of these third-party
-            ad servers and news portals for more detailed information. It may include their practices and instructions about how
-            to opt-out of certain options.
+            Our site contains links to original news articles on publisher websites like Divya Bhaskar. Once you click on those links and leave our site, we have no control over what those websites do with your data. We&apos;d recommend checking their own privacy policies if you&apos;re curious.
           </p>
         </section>
 
         <section className="static-page__section static-page__section--numbered">
           <div className="static-page__section-header">
             <span className="static-page__section-number">5</span>
-            <h2>Children&apos;s Information</h2>
+            <h2>Kids Under 13</h2>
           </div>
           <p>
-            Another part of our priority is adding protection for children while using the internet. We encourage parents and
-            guardians to observe, participate in, and/or monitor and guide their online activity. Samachar Gujrati does not
-            knowingly collect any Personal Identifiable Information from children under the age of 13.
+            We don&apos;t knowingly collect any personal information from children under 13 years old. If you&apos;re a parent and you think your child has somehow shared personal info through our site, please let us know and we&apos;ll delete it immediately.
           </p>
         </section>
 
         <section className="static-page__section static-page__section--numbered">
           <div className="static-page__section-header">
             <span className="static-page__section-number">6</span>
-            <h2>Consent</h2>
+            <h2>Browser Notifications</h2>
           </div>
           <p>
-            By using our website, you hereby consent to our Privacy Policy and agree to its terms.
+            We may ask for your permission to send browser notifications when new breaking news is published. This is completely optional — you can allow or block it, and you can change your mind anytime from your browser settings. We only send news alerts, nothing else.
+          </p>
+        </section>
+
+        <section className="static-page__section static-page__section--numbered">
+          <div className="static-page__section-header">
+            <span className="static-page__section-number">7</span>
+            <h2>Changes to This Policy</h2>
+          </div>
+          <p>
+            If we ever update this privacy policy, we&apos;ll change the &quot;Last updated&quot; date at the top. We don&apos;t expect major changes since we don&apos;t collect much data in the first place, but we want to be upfront about it.
           </p>
         </section>
 
         {/* CTA */}
         <div className="static-page__cta">
-          <p>Have questions about our privacy practices?{" "}
-            <Link href="/contact" className="static-page__inline-link">Contact us</Link>
+          <p>Got a question about your privacy?{" "}
+            <Link href="/contact" className="static-page__inline-link">Drop us an email</Link> — we&apos;re happy to explain anything.
           </p>
           <Link href="/" className="static-page__cta-btn">
             ← Back to Latest News
