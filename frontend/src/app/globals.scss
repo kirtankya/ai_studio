@@ -89,14 +89,44 @@ a {
   top: 0;
   z-index: 1000;
 
+  .navbar-brand {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    @media (min-width: 1280px) {
+      width: auto;
+    }
+  }
+
   .logo {
-    font-size: 1.8rem;
+    font-size: 1.4rem;  /* Made smaller */
     font-weight: 900;
     color: var(--primary-color);
     letter-spacing: -0.02em;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+  }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    
+    span {
+      height: 3px;
+      width: 100%;
+      background-color: var(--secondary-color);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
   }
 
   .nav-links {
@@ -584,5 +614,178 @@ a {
     text-align: center;
     color: var(--muted-text);
     font-size: 0.85rem;
+  }
+}
+
+/* =========================================================================
+   RESPONSIVE DESIGN (Media Queries)
+   ========================================================================= */
+
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 1rem 1.5rem;
+  }
+  
+  .footer .footer-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 1280px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+
+    .menu-toggle {
+      display: flex;
+    }
+    
+    .menu-toggle.active {
+      span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      span:nth-child(2) { opacity: 0; }
+      span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+    }
+
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      gap: 0;
+      margin-top: 1rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.5rem;
+      
+      &.open {
+        display: flex;
+      }
+      
+      a {
+        width: 100%;
+        text-align: left;
+        padding: 1rem;
+        font-size: 1.05rem;
+        border-bottom: 1px solid var(--border-color);
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &.nav-live {
+          justify-content: flex-start;
+          margin-top: 0.5rem;
+        }
+      }
+    }
+  }
+
+  .live-section {
+    flex-direction: column;
+
+    .section-header {
+      justify-content: center;
+    }
+
+    .live-ticker-container {
+      padding: 0.75rem 1rem;
+
+      .ticker-track {
+        gap: 1.5rem;
+      }
+
+      .live-ticker-item {
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .article-layout {
+    .article-page {
+      h1 {
+        font-size: 2rem;
+      }
+      .image {
+        max-height: 300px;
+      }
+    }
+  }
+  
+  .footer {
+    padding: 3rem 1rem 1.5rem;
+    
+    .footer-container {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 2.5rem;
+      
+      .footer-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        .logo {
+          margin: 0 auto 1rem auto;
+        }
+
+        .footer-desc p {
+          text-align: center;
+          margin: 0 auto;
+        }
+
+        .footer-features {
+          list-style-position: inside;
+          padding: 0;
+          margin: 1rem auto 0;
+          text-align: center;
+
+          li {
+            margin-bottom: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+  
+  .pagination {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .main-content {
+    padding: 0 1rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .news-card {
+    .image-wrapper {
+      height: 180px;
+    }
+    
+    .content {
+      padding: 1rem;
+      
+      h3 {
+        font-size: 1.1rem;
+      }
+      
+      .desc {
+        font-size: 0.9rem;
+      }
+    }
   }
 }
