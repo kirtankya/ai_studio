@@ -49,7 +49,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${jakarta.variable}`}>
+    <html lang="gu" className={`${jakarta.variable}`}>
       <head>
         <Script
           async
