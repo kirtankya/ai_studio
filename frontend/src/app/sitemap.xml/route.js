@@ -64,8 +64,7 @@ export async function GET() {
     const { data: articles, error } = await supabase
       .from('news')
       .select('url, published_date, slug')
-      .order('published_date', { ascending: false })
-      .limit(30);
+      .order('published_date', { ascending: false });
 
     if (error) {
       console.error("Sitemap fetch failed:", error.message);
