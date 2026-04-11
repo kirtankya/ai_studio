@@ -30,8 +30,11 @@ function generateSiteMap(articles, baseUrl) {
         .replace(/^\/+/, "")
         .replace(/\/$/, "");
 
+    const rawUrl = `${baseUrl}/${slug}`;
+    const safeUrl = rawUrl.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+
     return {
-      url: `${baseUrl}/${slug}`,
+      url: safeUrl,
       lastMod: item.published_date
         ? formatDate(item.published_date)
         : formatDate(new Date()),
