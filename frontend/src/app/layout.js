@@ -21,9 +21,8 @@ export const viewport = {
 // Global SEO Metadata Setup
 export const metadata = {
   metadataBase: new URL("https://samarchar-gujrati.vercel.app"),
-  title: "Samachar Gujrati | Premium Aggregated News Platform",
-  description: "A fully automated real-time news platform scraping the latest articles from multiple top sources including Indian Express and Divya Bhaskar.",
-  keywords: ["Gujarati news", "Gujarat latest news", "Samachar Gujrati", "Live updates", "Divya Bhaskar news", "Indian Express Gujarati"],
+  title: "Samachar Gujrati | Latest Gujarati News, Local & Breaking News",
+  description: "Read the latest and breaking news from Gujarat, India, and the world in Gujarati. Access 24/7 live updates on politics, sports, business, and entertainment from Gujarat's top news sources.",
   authors: [{ name: "Samachar Gujrati Team" }],
   publisher: "Samachar Gujrati",
   
