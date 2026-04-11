@@ -35,22 +35,27 @@ function generateSiteMap(articles, baseUrl) {
       lastMod: item.published_date
         ? formatDate(item.published_date)
         : formatDate(new Date()),
-      changeFreq: "daily",
-      priority: "0.7",
+      title: item.title ? item.title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : 'Samachar Gujrati News',
     };
   });
 
-  const allRoutes = [...staticRoutes, ...dynamicRoutes];
+  const allRoutes = [...dynamicRoutes]; // News sitemap shouldn't have static non-news URLs like category pages
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 ${allRoutes
   .map((route) => {
     return `  <url>
     <loc>${route.url}</loc>
-    <lastmod>${route.lastMod}</lastmod>
-    <changefreq>${route.changeFreq}</changefreq>
-    <priority>${route.priority}</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Samachar Gujrati</news:name>
+        <news:language>gu</news:language>
+      </news:publication>
+      <news:publication_date>${route.lastMod}</news:publication_date>
+      <news:title>${route.title}</news:title>
+    </news:news>
   </url>`;
   })
   .join('\n')}
@@ -61,9 +66,14 @@ export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://samarchar-gujrati.vercel.app";
 
   try {
+    // Google News Sitemaps should ideally only contain articles published in the last 48 hours
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
     const { data: articles, error } = await supabase
       .from('news')
-      .select('url, published_date, slug')
+      .select('url, published_date, slug, title')
+      .gte('published_date', twoDaysAgo.toISOString())
       .order('published_date', { ascending: false });
 
     if (error) {
