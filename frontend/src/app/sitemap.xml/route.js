@@ -8,7 +8,7 @@ const formatDate = (dateString) => {
   return date.toISOString().split('.')[0] + '+00:00';
 };
 
-function generateSiteMap(articles, baseUrl) {
+function generateSiteMap(baseUrl) {
   const staticRoutes = [
     { url: `${baseUrl}`, changeFreq: "hourly", priority: "1.0" },
     { url: `${baseUrl}/category/national`, changeFreq: "hourly", priority: "0.9" },
@@ -16,34 +16,18 @@ function generateSiteMap(articles, baseUrl) {
     { url: `${baseUrl}/category/gujarat`, changeFreq: "hourly", priority: "0.9" },
     { url: `${baseUrl}/category/sports`, changeFreq: "hourly", priority: "0.8" },
     { url: `${baseUrl}/category/business`, changeFreq: "hourly", priority: "0.8" },
+    { url: `${baseUrl}/category/entertainment`, changeFreq: "hourly", priority: "0.8" },
+    { url: `${baseUrl}/category/lifestyle`, changeFreq: "hourly", priority: "0.8" },
+    { url: `${baseUrl}/category/dharm-darshan`, changeFreq: "hourly", priority: "0.8" },
+    { url: `${baseUrl}/category/utility`, changeFreq: "hourly", priority: "0.8" },
+    { url: `${baseUrl}/category/magazine`, changeFreq: "hourly", priority: "0.8" },
     { url: `${baseUrl}/category/live-news`, changeFreq: "hourly", priority: "1.0" },
   ].map((route) => ({
     ...route,
     lastMod: formatDate(new Date()),
   }));
 
-  const dynamicRoutes = (articles || []).map((item) => {
-    const slug =
-      item.slug ||
-      item.url
-        .replace(/^https?:\/\/[^\/]+/, "")
-        .replace(/^\/+/, "")
-        .replace(/\/$/, "");
-
-    const rawUrl = `${baseUrl}/${slug}`;
-    const safeUrl = rawUrl.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-
-    return {
-      url: safeUrl,
-      lastMod: item.published_date
-        ? formatDate(item.published_date)
-        : formatDate(new Date()),
-      changeFreq: "daily",
-      priority: "0.7",
-    };
-  });
-
-  const allRoutes = [...staticRoutes, ...dynamicRoutes];
+  const allRoutes = [...staticRoutes];
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -64,16 +48,7 @@ export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://samarchar-gujrati.vercel.app";
 
   try {
-    const { data: articles, error } = await supabase
-      .from('news')
-      .select('url, published_date, slug')
-      .order('published_date', { ascending: false });
-
-    if (error) {
-      console.error("Sitemap fetch failed:", error.message);
-    }
-
-    const xml = generateSiteMap(error ? [] : articles, baseUrl);
+    const xml = generateSiteMap(baseUrl);
 
     return new Response(xml, {
       status: 200,
@@ -84,7 +59,7 @@ export async function GET() {
     });
   } catch (err) {
     console.error("Sitemap generation error:", err);
-    const fallbackXml = generateSiteMap([], baseUrl);
+    const fallbackXml = generateSiteMap(baseUrl);
     
     return new Response(fallbackXml, {
       status: 200,
