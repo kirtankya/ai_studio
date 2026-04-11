@@ -94,6 +94,65 @@ export default async function GenericPage({ params }) {
 
       {/* Main Article Content */}
       <article className="article-page">
+        {/* Dynamic NewsArticle JSON-LD Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "NewsArticle",
+              "headline": article.title,
+              "image": [article.image || `/api/og?title=${encodeURIComponent(article.title)}&category=${encodeURIComponent(article.category || 'News')}`],
+              "datePublished": article.published_date,
+              "dateModified": article.published_date,
+              "author": [{
+                  "@type": "Organization",
+                  "name": article.source_name === 'divyabhaskar' ? 'Divya Bhaskar' : 'Indian Express',
+              }],
+              "publisher": {
+                "@type": "Organization",
+                "name": "Samachar Gujrati",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://samarchar-gujrati.vercel.app/icon/512"
+                }
+              },
+              "description": article.description || article.title
+            })
+          }}
+        />
+
+        {/* Dynamic BreadcrumbList JSON-LD Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://samarchar-gujrati.vercel.app/"
+                },
+                ...(categorySlug ? [{
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": article.category,
+                  "item": `https://samarchar-gujrati.vercel.app/category/${categorySlug}`
+                }] : []),
+                {
+                  "@type": "ListItem",
+                  "position": categorySlug ? 3 : 2,
+                  "name": "Article",
+                  "item": `https://samarchar-gujrati.vercel.app/${Array.isArray(slug) ? slug.join('/') : slug}`
+                }
+              ]
+            })
+          }}
+        />
+
         {/* Breadcrumb */}
         <nav className="article-breadcrumb" aria-label="Breadcrumb" style={{
           display: 'flex',

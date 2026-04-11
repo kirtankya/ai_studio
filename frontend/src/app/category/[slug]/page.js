@@ -172,6 +172,31 @@ export default async function CategoryPage({ params, searchParams }) {
 
   return (
     <div className="main-content">
+      {/* Dynamic BreadcrumbList JSON-LD Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://samarchar-gujrati.vercel.app/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": displayName,
+                "item": `https://samarchar-gujrati.vercel.app/category/${category}`
+              }
+            ]
+          })
+        }}
+      />
+
       <div className="section-title-row">
         <h1 className="section-title" style={{ textTransform: "capitalize" }}>
           {displayName} News

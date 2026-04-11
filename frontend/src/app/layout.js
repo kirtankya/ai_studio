@@ -121,6 +121,25 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+
+        {/* Global Organization JSON-LD Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Samachar Gujrati",
+              "url": "https://samarchar-gujrati.vercel.app",
+              "logo": "https://samarchar-gujrati.vercel.app/icon/512",
+              "sameAs": [
+                "https://facebook.com",
+                "https://twitter.com",
+                "https://instagram.com"
+              ]
+            })
+          }}
+        />
       </head>
       <body className={jakarta.className}>
         {/* Global Components */}
