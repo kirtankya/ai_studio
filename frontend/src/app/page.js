@@ -7,6 +7,20 @@ export const revalidate = 60;
 
 const PAGE_SIZE = 12;
 
+// Centralized category definitions for quick links
+const CATEGORY_PILLS = [
+  { href: "/category/national", icon: "🇮🇳", label: "National" },
+  { href: "/category/international", icon: "🌍", label: "International" },
+  { href: "/category/gujarat", icon: "🏠", label: "Gujarat" },
+  { href: "/category/sports", icon: "⚽", label: "Sports" },
+  { href: "/category/business", icon: "📊", label: "Business" },
+  { href: "/category/entertainment", icon: "🎬", label: "Entertainment" },
+  { href: "/category/lifestyle", icon: "💆", label: "Lifestyle" },
+  { href: "/category/dharm-darshan", icon: "🕉️", label: "Dharm" },
+  { href: "/category/utility", icon: "🔧", label: "Utility" },
+  { href: "/category/magazine", icon: "📖", label: "Magazine" },
+];
+
 async function getNews(page = 1) {
   try {
     const from = (page - 1) * PAGE_SIZE;
@@ -168,36 +182,11 @@ export default async function Home({ searchParams }) {
         {/* Category Quick Links */}
         {page === 1 && (
           <div className="category-pills">
-            <Link href="/category/national" className="category-pill">
-              <span className="category-pill__icon">🇮🇳</span> National
-            </Link>
-            <Link href="/category/international" className="category-pill">
-              <span className="category-pill__icon">🌍</span> International
-            </Link>
-            <Link href="/category/gujarat" className="category-pill">
-              <span className="category-pill__icon">🏠</span> Gujarat
-            </Link>
-            <Link href="/category/sports" className="category-pill">
-              <span className="category-pill__icon">⚽</span> Sports
-            </Link>
-            <Link href="/category/business" className="category-pill">
-              <span className="category-pill__icon">📊</span> Business
-            </Link>
-            <Link href="/category/entertainment" className="category-pill">
-              <span className="category-pill__icon">🎬</span> Entertainment
-            </Link>
-            <Link href="/category/lifestyle" className="category-pill">
-              <span className="category-pill__icon">💆</span> Lifestyle
-            </Link>
-            <Link href="/category/dharm-darshan" className="category-pill">
-              <span className="category-pill__icon">🕉️</span> Dharm
-            </Link>
-            <Link href="/category/utility" className="category-pill">
-              <span className="category-pill__icon">🔧</span> Utility
-            </Link>
-            <Link href="/category/magazine" className="category-pill">
-              <span className="category-pill__icon">📖</span> Magazine
-            </Link>
+            {CATEGORY_PILLS.map((pill) => (
+              <Link key={pill.href} href={pill.href} className="category-pill">
+                <span className="category-pill__icon">{pill.icon}</span> {pill.label}
+              </Link>
+            ))}
           </div>
         )}
 

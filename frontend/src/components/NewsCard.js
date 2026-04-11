@@ -10,9 +10,9 @@ export default function NewsCard({ item, hideCategoryTag = false, featured = fal
         <div className="featured-card__image">
           {item.is_live && <div className="live-badge">Live</div>}
           {item.image ? (
-            <Image 
-              src={item.image} 
-              alt={item.title} 
+            <Image
+              src={item.image}
+              alt={item.title}
               fill
               unoptimized={false}
               sizes="(max-width: 768px) 100vw, 60vw"
@@ -50,9 +50,9 @@ export default function NewsCard({ item, hideCategoryTag = false, featured = fal
         {item.is_live && <div className="live-badge">Live</div>}
         {item.image ? (
           <div className="image-scale" style={{ width: '100%', height: '100%', position: 'relative' }}>
-            <Image 
-              src={item.image} 
-              alt={item.title} 
+            <Image
+              src={item.image}
+              alt={item.title}
               fill
               unoptimized={false}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -66,19 +66,19 @@ export default function NewsCard({ item, hideCategoryTag = false, featured = fal
         )}
         {!hideCategoryTag && <div className="category-tag">{item.category || "News"}</div>}
       </div>
-      
+
       <div className="content">
         <div className="meta">
           <span>{new Date(item.published_date || Date.now()).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
           <span className="read-time">• {Math.ceil((item.content?.length || 1000) / 1000)} min read</span>
         </div>
-        
+
         <h3>{item.title}</h3>
-        
+
         {item.description && (
           <p className="desc">{item.description}</p>
         )}
-        
+
         <div className="card-footer">
           <span className="read-more">Read Full Story →</span>
           {item.source_name && (
