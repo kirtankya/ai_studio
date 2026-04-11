@@ -39,12 +39,23 @@ export async function generateMetadata({ params }) {
   // Ensure slugPath is structured properly for the URL
   const slugPath = Array.isArray(slug) ? slug.join('/') : slug;
 
-  const ogImageUrl = `/api/og?title=${encodeURIComponent(article.title)}&category=${encodeURIComponent(article.category || 'News')}${article.image ? `&image=${encodeURIComponent(article.image)}` : ''}`;
+  // If the article has an image, use it directly to ensure perfect rendering on social media.
+  // We avoid the /api/og endpoint for Gujarati titles because standard edge fonts don't support Gujarati script out of the box, leading to missing text.
+  const ogImages = article.image 
+    ? [{ url: article.image }] 
+    : [
+        {
+          url: `/api/og?title=${encodeURIComponent('Latest News | Samachar Gujrati')}&category=${encodeURIComponent(article.category || 'News')}`,
+          width: 1200,
+          height: 630,
+          alt: "Samachar Gujrati",
+        }
+      ];
 
   return {
     title: `${article.title} - Samachar Gujrati`,
     description: article.description || article.title,
-    keywords: [article.category, "Gujarati news", "latest updates", "Samachar Gujrati"],
+    keywords: [article.category, "Gujrati news", "latest updates", "Samachar Gujrati"],
     authors: [{ name: article.source_name === 'divyabhaskar' ? 'Divya Bhaskar' : 'Indian Express' }],
     publisher: "Samachar Gujrati",
     alternates: {
@@ -53,20 +64,13 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: article.title,
       description: article.description || article.title,
-      images: [
-        {
-          url: ogImageUrl,
-          width: 1200,
-          height: 630,
-          alt: article.title,
-        }
-      ],
+      images: ogImages,
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description: article.description || article.title,
-      images: [ogImageUrl],
+      images: article.image ? [article.image] : ogImages.map(img => img.url),
     },
   };
 }
@@ -200,9 +204,11 @@ export default async function GenericPage({ params }) {
           <img src={article.image} alt={article.title} className="image" />
         )}
 
-        <div className="desc" style={{ whiteSpace: "pre-wrap", fontSize: "1.15rem", lineHeight: "1.85", color: "var(--text-color)" }}>
-          {article.content || article.description || "No content found for this article."}
-        </div>
+        <div 
+          className="desc" 
+          style={{ whiteSpace: "pre-wrap", fontSize: "1.15rem", lineHeight: "1.85", color: "var(--text-color)" }}
+          dangerouslySetInnerHTML={{ __html: article.content || article.description || "No content found for this article." }}
+        />
 
         <a href={article.url} target="_blank" rel="noopener noreferrer" className="original-link">
           Read Original Article →
