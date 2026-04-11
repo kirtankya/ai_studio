@@ -26,9 +26,47 @@ export const metadata = {
   keywords: ["Gujarati news", "Gujarat latest news", "Samachar Gujrati", "Live updates", "Divya Bhaskar news", "Indian Express Gujarati"],
   authors: [{ name: "Samachar Gujrati Team" }],
   publisher: "Samachar Gujrati",
+  
+  // Explicit Icons Array defined for ALL devices properly
   icons: {
-    icon: "/favicon.ico",
-    apple: "/favicon.ico",
+    icon: [
+      { url: '/icon/16', sizes: '16x16', type: 'image/png' },
+      { url: '/icon/32', sizes: '32x32', type: 'image/png' },
+      { url: '/icon/50', sizes: '50x50', type: 'image/png' },
+      { url: '/icon/72', sizes: '72x72', type: 'image/png' },
+      { url: '/icon/96', sizes: '96x96', type: 'image/png' },
+      { url: '/icon/150', sizes: '150x150', type: 'image/png' },
+      { url: '/icon/192', sizes: '192x192', type: 'image/png' },
+      { url: '/icon/512', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/icon/57', sizes: '57x57', type: 'image/png' },
+      { url: '/icon/76', sizes: '76x76', type: 'image/png' },
+      { url: '/icon/114', sizes: '114x114', type: 'image/png' },
+      { url: '/icon/120', sizes: '120x120', type: 'image/png' },
+      { url: '/icon/144', sizes: '144x144', type: 'image/png' },
+      { url: '/icon/152', sizes: '152x152', type: 'image/png' },
+      { url: '/icon/180', sizes: '180x180', type: 'image/png' },
+    ],
+  },
+  
+  // Open Graph Tag (Facebook, LinkedIn, Discord etc.)
+  openGraph: {
+    title: "Samachar Gujrati",
+    description: "Premium Aggregated News Platform giving you live updates from Gujarat and Beyond.",
+    url: "https://samarchar-gujrati.vercel.app",
+    siteName: "Samachar Gujrati",
+    images: [{ url: "/icon/512", width: 512, height: 512 }],
+    locale: "gu_IN",
+    type: "website",
+  },
+  
+  // Twitter Meta Tags
+  twitter: {
+    card: "summary",
+    title: "Samachar Gujrati | Live News",
+    description: "Stay informed 24/7 with the most trusted digital news platform in Gujarat.",
+    images: ["/icon/512"],
   },
   alternates: {
     canonical: "/",
