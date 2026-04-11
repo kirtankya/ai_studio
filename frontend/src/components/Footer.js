@@ -1,0 +1,88 @@
+import Link from "next/link";
+
+// Footer Configuration - Centralized for easy updates
+const FOOTER_CATEGORIES = [
+  { href: "/category/national", label: "National" },
+  { href: "/category/international", label: "International" },
+  { href: "/category/gujarat", label: "Gujarat" },
+  { href: "/category/sports", label: "Sports" },
+  { href: "/category/business", label: "Business" },
+  { href: "/category/entertainment", label: "Entertainment" },
+  { href: "/category/lifestyle", label: "Lifestyle" },
+  { href: "/category/dharm-darshan", label: "Dharm Darshan" },
+  { href: "/category/utility", label: "Utility" },
+  { href: "/category/magazine", label: "Magazine" },
+];
+
+const FOOTER_QUICK_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
+  { href: "/contact", label: "Contact" },
+  { href: "/privacy-policy", label: "Privacy Policy" },
+  { href: "/terms", label: "Terms of Service" },
+  { href: "/sitemap-news.xml", label: "Sitemap" },
+];
+
+export default function Footer() {
+  return (
+    <footer className="footer">
+      {/* Footer CTA Banner */}
+      <div className="footer-cta">
+        <div className="footer-cta__inner">
+          <span className="footer-cta__icon">📰</span>
+          <div className="footer-cta__text">
+            <h3>Stay Updated with Samachar Gujrati</h3>
+            <p>Get breaking news, trending stories, and real-time coverage — all in one place.</p>
+          </div>
+          <Link href="/category/live-news" className="footer-cta__btn">
+            Live News →
+          </Link>
+        </div>
+      </div>
+
+      <div className="footer-container">
+        {/* Brand / About */}
+        <div className="footer-brand">
+          <Link href="/" className="logo">Samachar Gujrati</Link>
+          <p className="footer-tagline">
+            Your trusted digital news companion — delivering accurate, real-time updates across Gujarat, India, and the world.
+          </p>
+          <div className="footer-trust">
+            <span>Breaking News</span>
+            <span>Trending Topics</span>
+            <span>Global Coverage</span>
+          </div>
+        </div>
+        
+        {/* Categories Mapping */}
+        <div className="footer-links">
+          <h4>Categories</h4>
+          <nav>
+            {FOOTER_CATEGORIES.map((link) => (
+              <Link key={link.href} href={link.href}>
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+        
+        {/* Quick Links Mapping */}
+        <div className="footer-legal">
+          <h4>Quick Links</h4>
+          <nav>
+            {FOOTER_QUICK_LINKS.map((link) => (
+              <Link key={link.href} href={link.href}>
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
+      
+      <div className="footer-bottom">
+        <p>&copy; {new Date().getFullYear()} Samachar Gujrati. All rights reserved.</p>
+        <p className="footer-bottom__credit">Built with ❤️ for Gujarat</p>
+      </div>
+    </footer>
+  );
+}
