@@ -58,10 +58,7 @@ def main():
             supabase.table("notifications").delete().lt("created_at", three_hours_ago).execute()
             print("Cleanup: Deleted old notifications (> 3 hours old).")
             
-            # Delete news older than 30 days
-            thirty_days_ago = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
-            supabase.table("news").delete().lt("published_date", thirty_days_ago).execute()
-            print("Cleanup: Deleted old news articles (> 30 days old).")
+            # (News deletion logic removed to keep articles permanently for SEO)
 
         except Exception as e:
             print(f"WARNING: Database cleanup failed: {e}")
