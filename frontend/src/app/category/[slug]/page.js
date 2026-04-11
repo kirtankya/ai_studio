@@ -125,6 +125,8 @@ export async function generateMetadata({ params }) {
   const displayName = getCategoryName(slug);
   const capitalizedCategory = displayName.replace(/\b\w/g, l => l.toUpperCase());
 
+  const ogImageUrl = `/api/og?title=${encodeURIComponent(capitalizedCategory + ' News | Samachar Gujrati')}&category=${encodeURIComponent(capitalizedCategory)}`;
+
   return {
     title: `${capitalizedCategory} News - Latest Updates | Samachar Gujrati`,
     description: `Read the latest and breaking news from ${capitalizedCategory} category in Gujarati on Samachar Gujrati.`,
@@ -137,6 +139,20 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: `${capitalizedCategory} News - Latest Updates | Samachar Gujrati`,
       description: `Read the latest and breaking news from ${capitalizedCategory} category in Gujarati on Samachar Gujrati.`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${capitalizedCategory} News - Samachar Gujrati`,
+        }
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${capitalizedCategory} News - Latest Updates | Samachar Gujrati`,
+      description: `Read the latest and breaking news from ${capitalizedCategory} category in Gujarati on Samachar Gujrati.`,
+      images: [ogImageUrl],
     },
   };
 }

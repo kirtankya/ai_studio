@@ -55,17 +55,23 @@ export const metadata = {
     description: "Premium Aggregated News Platform giving you live updates from Gujarat and Beyond.",
     url: "https://samarchar-gujrati.vercel.app",
     siteName: "Samachar Gujrati",
-    images: [{ url: "/icon/512", width: 512, height: 512 }],
+    images: [
+      { 
+        url: "/api/og?title=Samachar%20Gujrati%20%7C%20Latest%20Gujarati%20News%2C%20Local%20%26%20Breaking%20News&category=Latest%20News", 
+        width: 1200, 
+        height: 630 
+      }
+    ],
     locale: "gu_IN",
     type: "website",
   },
   
   // Twitter Meta Tags
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Samachar Gujrati | Live News",
     description: "Stay informed 24/7 with the most trusted digital news platform in Gujarat.",
-    images: ["/icon/512"],
+    images: ["/api/og?title=Samachar%20Gujrati%20%7C%20Latest%20Gujarati%20News%2C%20Local%20%26%20Breaking%20News&category=Latest%20News"],
   },
   alternates: {
     canonical: "/",

@@ -39,6 +39,8 @@ export async function generateMetadata({ params }) {
   // Ensure slugPath is structured properly for the URL
   const slugPath = Array.isArray(slug) ? slug.join('/') : slug;
 
+  const ogImageUrl = `/api/og?title=${encodeURIComponent(article.title)}&category=${encodeURIComponent(article.category || 'News')}${article.image ? `&image=${encodeURIComponent(article.image)}` : ''}`;
+
   return {
     title: `${article.title} - Samachar Gujrati`,
     description: article.description || article.title,
@@ -51,13 +53,20 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: article.title,
       description: article.description || article.title,
-      images: article.image ? [{ url: article.image }] : [],
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        }
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description: article.description || article.title,
-      images: article.image ? [article.image] : [],
+      images: [ogImageUrl],
     },
   };
 }
