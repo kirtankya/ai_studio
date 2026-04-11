@@ -9,6 +9,19 @@ const formatDate = (dateString) => {
 };
 
 function generateSiteMap(articles, baseUrl) {
+  const staticRoutes = [
+    { url: `${baseUrl}`, changeFreq: "hourly", priority: "1.0" },
+    { url: `${baseUrl}/category/national`, changeFreq: "hourly", priority: "0.9" },
+    { url: `${baseUrl}/category/international`, changeFreq: "hourly", priority: "0.9" },
+    { url: `${baseUrl}/category/gujarat`, changeFreq: "hourly", priority: "0.9" },
+    { url: `${baseUrl}/category/sports`, changeFreq: "hourly", priority: "0.8" },
+    { url: `${baseUrl}/category/business`, changeFreq: "hourly", priority: "0.8" },
+    { url: `${baseUrl}/category/live-news`, changeFreq: "hourly", priority: "1.0" },
+  ].map((route) => ({
+    ...route,
+    lastMod: formatDate(new Date()),
+  }));
+
   const dynamicRoutes = (articles || []).map((item) => {
     const slug =
       item.slug ||
@@ -23,13 +36,15 @@ function generateSiteMap(articles, baseUrl) {
         ? formatDate(item.published_date)
         : formatDate(new Date()),
       changeFreq: "daily",
-      priority: "0.8", // Increased priority for news articles
+      priority: "0.7",
     };
   });
 
+  const allRoutes = [...staticRoutes, ...dynamicRoutes];
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${dynamicRoutes
+${allRoutes
   .map((route) => {
     return `  <url>
     <loc>${route.url}</loc>
@@ -49,8 +64,7 @@ export async function GET() {
     const { data: articles, error } = await supabase
       .from('news')
       .select('url, published_date, slug')
-      .order('published_date', { ascending: false })
-      .limit(1000); // good practice to limit sitemap URLs to 1000 at a time or handle pagination if getting too large
+      .order('published_date', { ascending: false });
 
     if (error) {
       console.error("Sitemap fetch failed:", error.message);
@@ -62,11 +76,19 @@ export async function GET() {
       status: 200,
       headers: {
         'Content-Type': 'text/xml',
-        'Cache-Control': 'public, max-age=0, must-revalidate',
+        'Cache-Control': 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400',
       },
     });
   } catch (err) {
     console.error("Sitemap generation error:", err);
-    return new Response("Error generating sitemap", { status: 500 });
+    const fallbackXml = generateSiteMap([], baseUrl);
+    
+    return new Response(fallbackXml, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/xml',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+      },
+    });
   }
 }
