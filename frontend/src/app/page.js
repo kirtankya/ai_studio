@@ -102,23 +102,23 @@ export default async function Home({ searchParams }) {
     <div className="home-container">
       {/* Live News Ticker */}
       {page === 1 && liveNews.length > 0 && (
-        <section className="live-section">
+        <section className="live-section" style={{ maxWidth: '1240px', margin: '0 auto 2.5rem', marginTop: '0' }}>
           <div className="section-header">
             <div className="live-indicator">
               <span className="dot"></span>
-              LIVE UPDATES
+              LIVE
             </div>
           </div>
           <div className="live-ticker-container">
             <div className="ticker-track">
               {[...liveNews, ...liveNews].map((item, i) => {
-                 const slug = item.slug || item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/^\/+/, '').replace(/\/$/, '');
-                 return (
-                   <Link key={`${item.id}-${i}`} href={`/${slug}`} className="live-ticker-item">
-                     <span className="ticker-category">{item.category}</span>
-                     <span className="ticker-title">{item.title}</span>
-                   </Link>
-                 );
+                const slug = item.slug || item.url.replace(/^https?:\/\/[^\/]+/, '').replace(/^\/+/, '').replace(/\/$/, '');
+                return (
+                  <Link key={`${item.id}-${i}`} href={`/${slug}`} className="live-ticker-item">
+                    <span className="ticker-category">{item.category}</span>
+                    <span className="ticker-title">{item.title}</span>
+                  </Link>
+                );
               })}
             </div>
           </div>
@@ -130,7 +130,7 @@ export default async function Home({ searchParams }) {
         {page === 1 && (
           <div className="home-hero">
             <div className="home-hero__welcome">
-              <span className="home-hero__badge">📰 Samachar Gujrati</span>
+              <span className="home-hero__badge">Samachar Gujrati</span>
               <h1 className="home-hero__title">Stay Informed, Stay Ahead</h1>
               <p className="home-hero__desc">
                 Your trusted source for real-time news from Gujarat, India, and around the world.
@@ -143,7 +143,7 @@ export default async function Home({ searchParams }) {
                 </div>
                 <div className="home-hero__stat-divider" />
                 <div className="home-hero__stat">
-                  <span className="home-hero__stat-number">6+</span>
+                  <span className="home-hero__stat-number">10+</span>
                   <span className="home-hero__stat-label">Categories</span>
                 </div>
                 <div className="home-hero__stat-divider" />
@@ -203,7 +203,7 @@ export default async function Home({ searchParams }) {
 
         <div className="section-title-row">
           <h2 className="section-title">
-            {page === 1 ? "Latest News Feed" : `Latest News — Page ${page}`}
+            {page === 1 ? "Latest News" : `Latest News — Page ${page}`}
           </h2>
         </div>
 
@@ -229,7 +229,7 @@ export default async function Home({ searchParams }) {
               <div className="pagination">
                 {page > 1 && (
                   <Link href={`/?page=${page - 1}`} className="btn-pagination btn-prev">
-                    &larr; Previous
+                    ← Previous
                   </Link>
                 )}
 
@@ -251,7 +251,7 @@ export default async function Home({ searchParams }) {
 
                 {page < totalPages && (
                   <Link href={`/?page=${page + 1}`} className="btn-pagination btn-next">
-                    Next &rarr;
+                    Next →
                   </Link>
                 )}
               </div>

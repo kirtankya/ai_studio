@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import AdsenseBanner from "@/components/AdsenseBanner";
 
 export const revalidate = 60;
@@ -69,6 +70,10 @@ export default async function GenericPage({ params }) {
     notFound();
   }
 
+  const categorySlug = article.category
+    ? article.category.toLowerCase().replace(/\s+/g, '-')
+    : null;
+
   return (
     <div className="article-layout">
       {/* Left Ad Column */}
@@ -80,7 +85,44 @@ export default async function GenericPage({ params }) {
 
       {/* Main Article Content */}
       <article className="article-page">
-        {article.is_live && <div className="live-badge" style={{ position: "static", marginBottom: "1rem", width: "fit-content" }}>Live Updates</div>}
+        {/* Breadcrumb */}
+        <nav className="article-breadcrumb" aria-label="Breadcrumb" style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          fontSize: '0.82rem',
+          color: 'var(--text-secondary)',
+          marginBottom: '1.5rem',
+          fontWeight: 600,
+        }}>
+          <Link href="/" style={{ color: 'var(--text-secondary)', transition: 'color 0.15s' }}>Home</Link>
+          <span style={{ opacity: 0.4 }}>›</span>
+          {categorySlug && (
+            <>
+              <Link href={`/category/${categorySlug}`} style={{ color: 'var(--text-secondary)', transition: 'color 0.15s', textTransform: 'capitalize' }}>{article.category}</Link>
+              <span style={{ opacity: 0.4 }}>›</span>
+            </>
+          )}
+          <span style={{ color: 'var(--primary)', fontWeight: 700 }}>Article</span>
+        </nav>
+
+        {article.is_live && (
+          <div className="live-badge" style={{
+            position: "static",
+            marginBottom: "1rem",
+            width: "fit-content",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            padding: "0.3rem 0.8rem",
+            background: "var(--primary)",
+            color: "white",
+            fontSize: "0.72rem",
+            fontWeight: 800,
+            borderRadius: "var(--radius-full, 9999px)",
+            textTransform: "uppercase",
+          }}>Live Updates</div>
+        )}
         <h1>{article.title}</h1>
         <div className="meta">
           <span style={{ textTransform: "capitalize", fontWeight: "bold" }}>{article.category}</span> &bull; <span>{new Date(article.published_date).toLocaleString()}</span>
@@ -90,12 +132,12 @@ export default async function GenericPage({ params }) {
           <img src={article.image} alt={article.title} className="image" />
         )}
 
-        <div className="desc" style={{ whiteSpace: "pre-wrap", fontSize: "1.15rem", lineHeight: "1.8", color: "var(--text-color)" }}>
+        <div className="desc" style={{ whiteSpace: "pre-wrap", fontSize: "1.15rem", lineHeight: "1.85", color: "var(--text-color)" }}>
           {article.content || article.description || "No content found for this article."}
         </div>
 
         <a href={article.url} target="_blank" rel="noopener noreferrer" className="original-link">
-          Read Original Article on {article.source_name === 'divyabhaskar' ? 'Divya Bhaskar' : 'Indian Express'}
+          Read Original Article →
         </a>
       </article>
 

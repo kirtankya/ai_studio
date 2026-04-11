@@ -8,7 +8,7 @@ export default function NewsCard({ item, hideCategoryTag = false, featured = fal
     return (
       <Link href={`/${slug}`} className="featured-card">
         <div className="featured-card__image">
-          {item.is_live && <div className="live-badge">🔴 Live</div>}
+          {item.is_live && <div className="live-badge">Live</div>}
           {item.image ? (
             <Image 
               src={item.image} 
@@ -47,7 +47,7 @@ export default function NewsCard({ item, hideCategoryTag = false, featured = fal
   return (
     <Link href={`/${slug}`} className="news-card">
       <div className="image-wrapper">
-        {item.is_live && <div className="live-badge">🔴 Live</div>}
+        {item.is_live && <div className="live-badge">Live</div>}
         {item.image ? (
           <div className="image-scale" style={{ width: '100%', height: '100%', position: 'relative' }}>
             <Image 
@@ -80,7 +80,7 @@ export default function NewsCard({ item, hideCategoryTag = false, featured = fal
         )}
         
         <div className="card-footer">
-          <span className="read-more">Read Full Story »</span>
+          <span className="read-more">Read Full Story →</span>
           {item.source_name && (
             <span className="card-source">
               {item.source_name === 'divyabhaskar' ? 'Divya Bhaskar' : item.source_name}

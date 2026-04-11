@@ -7,11 +7,23 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [permission, setPermission] = useState("default");
   const [scrolled, setScrolled] = useState(false);
+  const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined" && "Notification" in window) {
       setPermission(Notification.permission);
     }
+
+    // Format current date
+    const now = new Date();
+    setCurrentDate(
+      now.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
+    );
 
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -47,9 +59,10 @@ export default function Header() {
     <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       <div className="navbar-brand">
         <Link href="/" className="logo" onClick={closeMenu}>
-          <span className="logo-icon">📰</span>
           <span className="logo-text">Samachar <span className="logo-accent">Gujrati</span></span>
+          <span className="logo-dot" aria-hidden="true"></span>
         </Link>
+        {currentDate && <span className="nav-date">{currentDate}</span>}
         <button 
           className={`menu-toggle ${isOpen ? "active" : ""}`} 
           onClick={toggleMenu}

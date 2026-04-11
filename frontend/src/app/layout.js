@@ -5,6 +5,7 @@ import Script from "next/script";
 import Header from "@/components/Header";
 import NotificationListener from "@/components/NotificationListener";
 import CookieConsent from "@/components/CookieConsent";
+import BackToTop from "@/components/BackToTop";
 
 const jakarta = Plus_Jakarta_Sans({ 
   subsets: ["latin"],
@@ -13,7 +14,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const viewport = {
-  themeColor: "#D32F2F",
+  themeColor: "#C62828",
 };
 
 export const metadata = {
@@ -91,34 +92,34 @@ export default function RootLayout({ children }) {
                 <p>Get breaking news, trending stories, and real-time coverage — all in one place.</p>
               </div>
               <Link href="/category/live-news" className="footer-cta__btn">
-                🔴 Live News
+                Live News →
               </Link>
             </div>
           </div>
 
           <div className="footer-container">
             <div className="footer-brand">
-              <Link href="/" className="logo">📰 Samachar Gujrati</Link>
+              <Link href="/" className="logo">Samachar Gujrati</Link>
               <p className="footer-tagline">Your trusted digital news companion — delivering accurate, real-time updates across Gujarat, India, and the world.</p>
               <div className="footer-trust">
-                <span>📢 Breaking News</span>
-                <span>📊 Trending Topics</span>
-                <span>🌍 Global Coverage</span>
+                <span>Breaking News</span>
+                <span>Trending Topics</span>
+                <span>Global Coverage</span>
               </div>
             </div>
             <div className="footer-links">
               <h4>Categories</h4>
               <nav>
-                <Link href="/category/national">🇮🇳 National</Link>
-                <Link href="/category/international">🌍 International</Link>
-                <Link href="/category/gujarat">🏠 Gujarat</Link>
-                <Link href="/category/sports">⚽ Sports</Link>
-                <Link href="/category/business">📊 Business</Link>
-                <Link href="/category/entertainment">🎬 Entertainment</Link>
-                <Link href="/category/lifestyle">💆 Lifestyle</Link>
-                <Link href="/category/dharm-darshan">🕉️ Dharm Darshan</Link>
-                <Link href="/category/utility">🔧 Utility</Link>
-                <Link href="/category/magazine">📖 Magazine</Link>
+                <Link href="/category/national">National</Link>
+                <Link href="/category/international">International</Link>
+                <Link href="/category/gujarat">Gujarat</Link>
+                <Link href="/category/sports">Sports</Link>
+                <Link href="/category/business">Business</Link>
+                <Link href="/category/entertainment">Entertainment</Link>
+                <Link href="/category/lifestyle">Lifestyle</Link>
+                <Link href="/category/dharm-darshan">Dharm Darshan</Link>
+                <Link href="/category/utility">Utility</Link>
+                <Link href="/category/magazine">Magazine</Link>
               </nav>
             </div>
             <div className="footer-legal">
@@ -138,6 +139,7 @@ export default function RootLayout({ children }) {
             <p className="footer-bottom__credit">Built with ❤️ for Gujarat</p>
           </div>
         </footer>
+        <BackToTop />
       </body>
     </html>
   );
